@@ -15,38 +15,47 @@ namespace AWS
     public class DynamoDB
     {
         #region Enums
-        public enum Action { PUT, DELETE, ADD };
+        /// <summary>
+        /// Indicates an Update Action
+        /// </summary>
+        public enum UpdateAction { PUT, DELETE, ADD };
 
+        /// <summary>
+        /// Indicates the different Comparison Operators
+        /// </summary>
         public enum ComparisonOperator { Equal, NotEqual, LessThanOrEqual, LessThan, GreaterThanOrEqual, GreaterThan, AttributeExists, AttributeDoesNotExist, ChecksForASubsequenceOrValueInASet, ChecksForAbsenceOfASubsequenceOrAbsenceOfAValueInASet, ChecksForAPrefix, ChecksForExactMatches, GreaterThanOrEqualToTheFirstValueAndLessThanOrEqualToTheSecondValue };
         #endregion
 
         #region Fields
         /// <summary>
-        /// AmazonDynamoDB Client
+        /// Amazon DynamoDB client
         /// </summary>
         private AmazonDynamoDBClient _ddb;
 
         /// <summary>
-        /// The Next Write Batch
+        /// The next write batch
         /// </summary>
         private List<Dictionary<String, List<WriteRequest>>> _writeBatch = new List<Dictionary<String, List<WriteRequest>>>();
 
         /// <summary>
-        /// The Next Write Batch Index Request Counts
+        /// The number of requests in each sub-batch
         /// </summary>
         /// <remarks>
-        /// Keeps track of the number of write requests in each batch
+        /// Keeps track of the number of write requests in each sub-batch in the next write batch
         /// </remarks>
         private List<Int32> _writeBatchIndexRequestCounts = new List<Int32>();
 
         /// <summary>
-        /// The Next Write Batch Index
+        /// The index of the current sub-batch to add to
         /// </summary>
         /// <remarks>
-        /// Keeps track of the batch to add aditional requests too
+        /// Keeps track of the sub-batch to add aditional requests to in the next write batch
         /// </remarks>
         private Int32 _writeBatchIndex = 0;
 
+        /// <summary>
+        /// The strings of the different comparison operators
+        /// </summary>
         private readonly Dictionary<ComparisonOperator, String> ComparisonOperatorString = new Dictionary<ComparisonOperator, String>()
         {
             {ComparisonOperator.Equal, "EQ"},
@@ -72,29 +81,28 @@ namespace AWS
         public DynamoDB(String accesskey, String secretAccessKey)
         {
             _ddb = new AmazonDynamoDBClient(accesskey, secretAccessKey);
-            
         }
         #endregion
 
         #region Methods
 
         #region PutItem
+        /// <summary>
+        /// Puts an item in a table
+        /// </summary>
+        /// <param name="tableName">The name of the table where the item is to be put</param>
+        /// <param name="attributeKey">The name of the item's attribute</param>
+        /// <param name="attributeValue">The value of the item's attribute</param>
         public void PutItem(String tableName, String attributeKey, Object attributeValue)
         {
-            Table table = Table.LoadTable(_ddb, tableName);
-            Document document = new Document();
-            if (attributeValue is String)       document[attributeKey] = (String)attributeValue;
-            else if (attributeValue is Byte)    document[attributeKey] = (Byte)attributeValue;
-            else if (attributeValue is SByte)   document[attributeKey] = (SByte)attributeValue;
-            else if (attributeValue is Int16)   document[attributeKey] = (Int16)attributeValue;
-            else if (attributeValue is UInt16)  document[attributeKey] = (UInt16)attributeValue;
-            else if (attributeValue is Int32)   document[attributeKey] = (Int32)attributeValue;
-            else if (attributeValue is UInt32)  document[attributeKey] = (UInt32)attributeValue;
-            else if (attributeValue is Int64)   document[attributeKey] = (Int64)attributeValue;
-            else if (attributeValue is UInt64)  document[attributeKey] = (UInt64)attributeValue;
-            else throw new Exception("Unsupported Type");
-            table.PutItem(document);
+            PutItem(tableName, new Dictionary<String, Object>() { { attributeKey, attributeValue } });
         }
+
+        /// <summary>
+        /// Puts an item in a table
+        /// </summary>
+        /// <param name="tableName">The name of the table where the item is to be put</param>
+        /// <param name="attributes">The item's attributes</param>
         public void PutItem(String tableName, Dictionary<String, Object> attributes)
         {
             Table table = Table.LoadTable(_ddb, tableName);
@@ -119,38 +127,32 @@ namespace AWS
         #endregion
 
         #region UpdateItem
-        public void UpdateItem(String tableName, Object itemKey, String attributeKey, Object attributeValue, Action action)
+        /// <summary>
+        /// Updates an item in a table
+        /// </summary>
+        /// <param name="tableName">The name of the table where the item is to be updated</param>
+        /// <param name="itemPrimaryKey">The value of the item's primary key</param>
+        /// <param name="attributeKey">The name of the item's attribute to be updated</param>
+        /// <param name="attributeValue">The value of the item's attribute to be updated</param>
+        /// <param name="action">The action to perform when updating the item's attribute</param>
+        public void UpdateItem(String tableName, Object itemPrimaryKey, String attributeKey, Object attributeValue, UpdateAction action)
         {
-            // Set Key
-            UpdateItemRequest updateItemRequest = new UpdateItemRequest();
-            updateItemRequest.TableName = tableName;
-            updateItemRequest.Key = new Key() { HashKeyElement = SetAttributeValue(itemKey) };
-            // Set Attribute Value
-            Dictionary<String, AttributeValueUpdate> itemAttributes = new Dictionary<String, AttributeValueUpdate>();
-            AttributeValueUpdate attributeValueUpdate = new AttributeValueUpdate();
-            attributeValueUpdate.Value = SetAttributeValue(attributeValue);
-            switch (action)
-            {
-                case Action.PUT:
-                    attributeValueUpdate.Action = "PUT";
-                    break;
-                case Action.DELETE:
-                    attributeValueUpdate.Action = "DELETE";
-                    break;
-                case Action.ADD:
-                    attributeValueUpdate.Action = "ADD";
-                    break;
-            }
-            itemAttributes[attributeKey] = attributeValueUpdate;
-            updateItemRequest.AttributeUpdates = itemAttributes;
-            UpdateItemResponse putItemResponse = _ddb.UpdateItem(updateItemRequest);
+            UpdateItem(tableName, itemPrimaryKey, new Dictionary<String, Object>() { { attributeKey, attributeValue } }, action);
         }
-        public void UpdateItem(String tableName, Object itemKey, Dictionary<String, Object> attributes, Action action)
+
+        /// <summary>
+        /// Updates an item in a table
+        /// </summary>
+        /// <param name="tableName">The name of the table where the item is to be updated</param>
+        /// <param name="itemPrimaryKey">The value of the item's primary key</param>
+        /// <param name="attributes">The item's attributes to be updated</param>
+        /// <param name="action">The action to perform when updating the item's attributes</param>
+        public void UpdateItem(String tableName, Object itemPrimaryKey, Dictionary<String, Object> attributes, UpdateAction action)
         {
             // Set Key
             UpdateItemRequest updateItemRequest = new UpdateItemRequest();
             updateItemRequest.TableName = tableName;
-            updateItemRequest.Key = new Key() { HashKeyElement = SetAttributeValue(itemKey) };
+            updateItemRequest.Key = new Key() { HashKeyElement = SetAttributeValue(itemPrimaryKey) };
             // Set Attribute Value
             Dictionary<String, AttributeValueUpdate> itemAttributes = new Dictionary<String, AttributeValueUpdate>();
             foreach (var attribute in attributes)
@@ -159,13 +161,13 @@ namespace AWS
                 attributeValueUpdate.Value = SetAttributeValue(attribute.Value);
                 switch (action)
                 {
-                    case Action.PUT:
+                    case UpdateAction.PUT:
                         attributeValueUpdate.Action = "PUT";
                         break;
-                    case Action.DELETE:
+                    case UpdateAction.DELETE:
                         attributeValueUpdate.Action = "DELETE";
                         break;
-                    case Action.ADD:
+                    case UpdateAction.ADD:
                         attributeValueUpdate.Action = "ADD";
                         break;
                 }
@@ -176,41 +178,15 @@ namespace AWS
         }
         #endregion
 
-        #region WriteBatch
-
+        #region BatchWrite
         /// <summary>
-        /// Adds an item to be Deleted in the next batch write.
+        /// Adds an item to be added in the next batch write.
         /// </summary>
-        /// <param name="tableName">The name of the table where the item is to deleted.</param>
-        /// <param name="attributes">The items primary key.</param>
-        public void AddToBatchWriteDelete(String tableName, Object itemKey)
+        /// <param name="tableName">The name of the table where the item is to placed.</param>
+        /// <param name="attributes">The items attributes.</param>
+        public void AddToBatchWritePut(String tableName, Dictionary<String, Object> attributes)
         {
-            WriteRequest writeRequest = new WriteRequest();
-            DeleteRequest deleteRequest = new DeleteRequest();
-            deleteRequest.Key = new Key() { HashKeyElement = SetAttributeValue(itemKey) };
-            writeRequest.DeleteRequest = deleteRequest;
-            try
-            {
-                _writeBatch[_writeBatchIndex][tableName].Add(writeRequest);
-            }
-            catch (ArgumentOutOfRangeException)
-            {
-                _writeBatch.Add(new Dictionary<String, List<WriteRequest>>());
-                _writeBatch[_writeBatchIndex][tableName] = new List<WriteRequest>() { writeRequest };
-                _writeBatchIndexRequestCounts.Add(0);
-            }
-            catch (KeyNotFoundException)
-            {
-                _writeBatch[_writeBatchIndex][tableName] = new List<WriteRequest>() { writeRequest };
-            }
-            finally
-            {
-                _writeBatchIndexRequestCounts[_writeBatchIndex]++;
-                if (_writeBatchIndexRequestCounts[_writeBatchIndex] == 25)
-                {
-                    _writeBatchIndex++;
-                }
-            }
+            AddToBatchWritePut(tableName, attributes, _writeBatch, _writeBatchIndexRequestCounts, _writeBatchIndex);
         }
 
         /// <summary>
@@ -218,7 +194,10 @@ namespace AWS
         /// </summary>
         /// <param name="tableName">The name of the table where the item is to placed.</param>
         /// <param name="attributes">The items attributes.</param>
-        public void AddToBatchWritePut(String tableName, Dictionary<String, Object> attributes)
+        /// <param name="writeBatch">The write batch to add the item to</param>
+        /// <param name="writeBatchIndexRequestCounts">The number of requests in each sub-batch</param>
+        /// <param name="writeBatchIndex">The index of the current sub-batch to add to</param>
+        private void AddToBatchWritePut(String tableName, Dictionary<String, Object> attributes, List<Dictionary<String, List<WriteRequest>>> writeBatch, List<Int32> writeBatchIndexRequestCounts, Int32 writeBatchIndex)
         {
             WriteRequest writeRequest = new WriteRequest();
             PutRequest putRequest = new PutRequest();
@@ -229,28 +208,78 @@ namespace AWS
             }
             putRequest.Item = attributesFormated;
             writeRequest.PutRequest = putRequest;
+            AddToBatchWrite(tableName, writeRequest, writeBatch, writeBatchIndexRequestCounts, writeBatchIndex);
+        }
+
+        /// <summary>
+        /// Adds an item to the next batch write.
+        /// </summary>
+        /// <param name="tableName">The name of the table where the item is to placed.</param>
+        /// <param name="writeRequest">The write request</param>
+        public void AddToBatchWrite(String tableName, WriteRequest writeRequest)
+        {
+            AddToBatchWrite(tableName, writeRequest, _writeBatch, _writeBatchIndexRequestCounts, _writeBatchIndex);
+        }
+
+        /// <summary>
+        /// Adds an item to the next batch write.
+        /// </summary>
+        /// <param name="tableName">The name of the table where the item is to placed.</param>
+        /// <param name="writeRequest">The write request</param>
+        /// <param name="writeBatch">The write batch to add the item to</param>
+        /// <param name="writeBatchIndexRequestCounts">The number of requests in each sub-batch</param>
+        /// <param name="writeBatchIndex">The index of the current sub-batch to add to</param>
+        private void AddToBatchWrite(String tableName, WriteRequest writeRequest, List<Dictionary<String, List<WriteRequest>>> writeBatch, List<Int32> writeBatchIndexRequestCounts, Int32 writeBatchIndex)
+        {
             try
             {
-                _writeBatch[_writeBatchIndex][tableName].Add(writeRequest);
+                writeBatch[writeBatchIndex][tableName].Add(writeRequest);
             }
             catch (ArgumentOutOfRangeException)
             {
-                _writeBatch.Add(new Dictionary<String, List<WriteRequest>>());
-                _writeBatch[_writeBatchIndex][tableName] = new List<WriteRequest>() { writeRequest };
-                _writeBatchIndexRequestCounts.Add(0);
+                writeBatch.Add(new Dictionary<String, List<WriteRequest>>());
+                writeBatch[writeBatchIndex][tableName] = new List<WriteRequest>() { writeRequest };
+                writeBatchIndexRequestCounts.Add(0);
             }
             catch (KeyNotFoundException)
             {
-                _writeBatch[_writeBatchIndex][tableName] = new List<WriteRequest>() { writeRequest };
+                writeBatch[writeBatchIndex][tableName] = new List<WriteRequest>() { writeRequest };
             }
             finally
             {
-                _writeBatchIndexRequestCounts[_writeBatchIndex]++;
-                if (_writeBatchIndexRequestCounts[_writeBatchIndex] == 25)
+                writeBatchIndexRequestCounts[writeBatchIndex]++;
+                if (writeBatchIndexRequestCounts[writeBatchIndex] == 25)
                 {
-                    _writeBatchIndex++;
+                    writeBatchIndex++;
                 }
             }
+        }
+
+        /// <summary>
+        /// Adds an item to be deleted in the next batch write.
+        /// </summary>
+        /// <param name="tableName">The name of the table where the item is to deleted.</param>
+        /// <param name="itemPrimaryKey">The items primary key.</param>
+        public void AddToBatchWriteDelete(String tableName, Object itemPrimaryKey)
+        {
+            AddToBatchWriteDelete(tableName, itemPrimaryKey, _writeBatch, _writeBatchIndexRequestCounts, _writeBatchIndex);
+        }
+
+        /// <summary>
+        /// Adds an item to be deleted in the next batch write.
+        /// </summary>
+        /// <param name="tableName">The name of the table where the item is to deleted.</param>
+        /// <param name="itemPrimaryKey">The items primary key.</param>
+        /// <param name="writeBatch">The write batch to add the item to</param>
+        /// <param name="writeBatchIndexRequestCounts">The number of requests in each sub-batch</param>
+        /// <param name="writeBatchIndex">The index of the current sub-batch to add to</param>
+        private void AddToBatchWriteDelete(String tableName, Object itemPrimaryKey, List<Dictionary<String, List<WriteRequest>>> writeBatch, List<Int32> writeBatchIndexRequestCounts, Int32 writeBatchIndex)
+        {
+            WriteRequest writeRequest = new WriteRequest();
+            DeleteRequest deleteRequest = new DeleteRequest();
+            deleteRequest.Key = new Key() { HashKeyElement = SetAttributeValue(itemPrimaryKey) };
+            writeRequest.DeleteRequest = deleteRequest;
+            AddToBatchWrite(tableName, writeRequest, writeBatch, writeBatchIndexRequestCounts, writeBatchIndex);
         }
 
         /// <summary>
@@ -258,12 +287,7 @@ namespace AWS
         /// </summary>
         public void BatchWriteExecute()
         {
-            foreach (var subBatch in _writeBatch)
-            {
-                BatchWriteItemRequest batchWriteItemRequest = new BatchWriteItemRequest();
-                batchWriteItemRequest.RequestItems = subBatch;
-                BatchWriteItemResponse batchWriteItemResponse = _ddb.BatchWriteItem(batchWriteItemRequest);
-            }
+            BatchWriteExecute(_writeBatch);
             _writeBatch = new List<Dictionary<String, List<WriteRequest>>>();
             _writeBatchIndexRequestCounts = new List<Int32>();
             _writeBatchIndex = 0;
@@ -271,70 +295,66 @@ namespace AWS
         }
 
         /// <summary>
+        /// Performs a batch write on items already added to the batch
+        /// </summary>
+        /// <param name="writeBatch"></param>
+        public void BatchWriteExecute(List<Dictionary<String, List<WriteRequest>>> writeBatch)
+        {
+            foreach (var subBatch in writeBatch)
+            {
+                BatchWriteItemRequest batchWriteItemRequest = new BatchWriteItemRequest();
+                batchWriteItemRequest.RequestItems = subBatch;
+                BatchWriteItemResponse batchWriteItemResponse = _ddb.BatchWriteItem(batchWriteItemRequest);
+            }
+        }
+
+        /// <summary>
         /// Performs a batch write on items to be added
         /// </summary>
-        /// <param name="batch">Data to be added</param>
+        /// <param name="data">Data to be added</param>
         /// <remarks>
         /// Data Format
         /// key = table name
         /// value = list of items containing their attributes
         /// </remarks>
-        public void BatchWritePutExecute(Dictionary<String, List<Dictionary<String, Object>>> batch)
+        public void BatchWritePutExecute(Dictionary<String, List<Dictionary<String, Object>>> data)
         {
-            BatchWriteItemRequest batchWriteItemRequest = new BatchWriteItemRequest();
-            Dictionary<String, List<WriteRequest>> requests = new Dictionary<String, List<WriteRequest>>();
-            foreach (var table in batch)
+            List<Dictionary<String, List<WriteRequest>>> writeBatch = new List<Dictionary<String, List<WriteRequest>>>();
+            List<Int32> writeBatchIndexRequestCounts = new List<Int32>();
+            Int32 writeBatchIndex = 0;
+            foreach (var table in data)
             {
-                List<WriteRequest> writeRequests = new List<WriteRequest>();
                 foreach (var item in table.Value)
                 {
-                    WriteRequest writeRequest = new WriteRequest();
-                    PutRequest putRequest = new PutRequest();
-                    Dictionary<String, AttributeValue> attributes = new Dictionary<String, AttributeValue>();
-                    foreach (var attribute in item)
-                    {
-                        attributes[attribute.Key] = SetAttributeValue(attribute.Value);
-                    }
-                    putRequest.Item = attributes;
-                    writeRequest.PutRequest = putRequest;
-                    writeRequests.Add(writeRequest);
+                    AddToBatchWritePut(table.Key, item, writeBatch, writeBatchIndexRequestCounts, writeBatchIndex);
                 }
-                requests[table.Key] = writeRequests;
             }
-            batchWriteItemRequest.RequestItems = requests;
-            BatchWriteItemResponse batchWriteItemResponse = _ddb.BatchWriteItem(batchWriteItemRequest);
+            BatchWriteExecute(writeBatch);
         }
 
         /// <summary>
         /// Performs a batch write on items to be deleted
         /// </summary>
-        /// <param name="batch">Data to be deleted</param>
+        /// <param name="data">Data to be deleted</param>
         /// <remarks>
         /// Data Format
         /// key = table name
         /// value = list of items containing their primary key
         /// </remarks>
-        public void BatchWriteDeleteExecute(Dictionary<String, List<Object>> batch)
+        public void BatchWriteDeleteExecute(Dictionary<String, List<Object>> data)
         {
-            BatchWriteItemRequest batchWriteItemRequest = new BatchWriteItemRequest();
-            Dictionary<String, List<WriteRequest>> requests = new Dictionary<String, List<WriteRequest>>();
-            foreach (var table in batch)
+            List<Dictionary<String, List<WriteRequest>>> writeBatch = new List<Dictionary<String, List<WriteRequest>>>();
+            List<Int32> writeBatchIndexRequestCounts = new List<Int32>();
+            Int32 writeBatchIndex = 0;
+            foreach (var table in data)
             {
-                List<WriteRequest> writeRequests = new List<WriteRequest>();
                 foreach (var item in table.Value)
                 {
-                    WriteRequest writeRequest = new WriteRequest();
-                    DeleteRequest deleteRequest = new DeleteRequest();
-                    deleteRequest.Key = new Key() { HashKeyElement = SetAttributeValue(item) };
-                    writeRequest.DeleteRequest = deleteRequest;
-                    writeRequests.Add(writeRequest);
+                    AddToBatchWriteDelete(table.Key, item, writeBatch, writeBatchIndexRequestCounts, writeBatchIndex);
                 }
-                requests[table.Key] = writeRequests;
             }
-            batchWriteItemRequest.RequestItems = requests;
-            BatchWriteItemResponse batchWriteItemResponse = _ddb.BatchWriteItem(batchWriteItemRequest);
+            BatchWriteExecute(writeBatch);
         }
-
         #endregion
 
         public void DeleteItem(String tablename, Object itemKey)
