@@ -357,30 +357,45 @@ namespace AWS
         }
         #endregion
 
-        public void DeleteItem(String tablename, Object itemKey)
+        #region DeleteItem
+        /// <summary>
+        /// Deletes an item from a table
+        /// </summary>
+        /// <param name="tableName">The name of the table where the item is to be deleted</param>
+        /// <param name="itemPrimaryKey">The value of the item's primary key</param>
+        public void DeleteItem(String tablename, Object itemPrimaryKey)
         {
             DeleteItemRequest deleteItemRequest = new DeleteItemRequest();
             deleteItemRequest.TableName = tablename;
-            deleteItemRequest.Key = new Key() { HashKeyElement = SetAttributeValue(itemKey) };
+            deleteItemRequest.Key = new Key() { HashKeyElement = SetAttributeValue(itemPrimaryKey) };
             DeleteItemResponse deleteItemResponse = _ddb.DeleteItem(deleteItemRequest);
         }
+        #endregion
 
-        public Dictionary<String, Object> GetItem(String tableName, Object itemKey, List<String> attributes)
+        #region GetItem
+        /// <summary>
+        /// Gets an item from a table
+        /// </summary>
+        /// <param name="tableName">The name of the table where the item is located</param>
+        /// <param name="itemPrimaryKey">The value of the item's primary key</param>
+        /// <param name="attributes">The attributes of the item to to be returned upon finding the item in the table</param>
+        /// <returns>An item's attributes</returns>
+        public Dictionary<String, Object> GetItem(String tableName, Object itemPrimaryKey, List<String> attributes)
         {
             GetItemRequest getItemRequest = new GetItemRequest();
             getItemRequest.TableName = tableName;
-            getItemRequest.Key = new Key() { HashKeyElement = SetAttributeValue(itemKey) };
+            getItemRequest.Key = new Key() { HashKeyElement = SetAttributeValue(itemPrimaryKey) };
             getItemRequest.AttributesToGet = attributes;
             GetItemResponse getItemResponse = _ddb.GetItem(getItemRequest);
             GetItemResult getItemResult = getItemResponse.GetItemResult;
             Dictionary<String, Object> returnedAttributes = new Dictionary<String, Object>();
-
             foreach (var item in getItemResult.Item)
             {
                 returnedAttributes[item.Key] = GetAttributeValue(item.Value);
             }
             return returnedAttributes;
         }
+        #endregion
 
         #region ScanReturnItem
         public Dictionary<String, Object> ScanReturnItem(String tableName, String attributeName, Object attributeValue, ComparisonOperator comparison)
