@@ -5,7 +5,7 @@ using Amazon.SimpleDB.Util;
 using System;
 using System.Collections.Generic;
 
-namespace AWS
+namespace AWS.SimpleDB
 {
     public class SimpleDB
     {

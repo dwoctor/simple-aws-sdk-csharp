@@ -9,7 +9,7 @@ using System.Xml;
 using System.Xml.Linq;
 
 
-namespace AWS
+namespace AWS.SQS
 {
     public class SQS
     {

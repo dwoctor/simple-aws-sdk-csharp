@@ -10,8 +10,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace AWS
+namespace AWS.DynamoDB
 {
+    /// <summary>
+    /// A DynamoDB Library
+    /// </summary>
     public class DynamoDB
     {
         #region Enums
@@ -76,7 +79,7 @@ namespace AWS
 
         #region Constructors
         /// <summary>
-        /// Upon Construction of the Queue
+        /// Constructs a DynamoDB
         /// </summary>
         public DynamoDB(String accesskey, String secretAccessKey)
         {
@@ -398,14 +401,42 @@ namespace AWS
         #endregion
 
         #region ScanReturnItem
+        /// <summary>
+        /// Scans for an item in a table
+        /// </summary>
+        /// <param name="tableName">The name of the table to scan</param>
+        /// <param name="attributeName">The name of the attribute of the item to find</param>
+        /// <param name="attributeValue">The value of the attribute of the item to find</param>
+        /// <param name="comparison">The type of comparison to perform when comparing the value of the attribute</param>
+        /// <returns>An item's attributes</returns>
         public Dictionary<String, Object> ScanReturnItem(String tableName, String attributeName, Object attributeValue, ComparisonOperator comparison)
         {
             return ScanReturnItem(tableName, attributeName, attributeValue, comparison, new List<String>());
         }
+
+        /// <summary>
+        /// Scans for an item in a table
+        /// </summary>
+        /// <param name="tableName">The name of the table to scan</param>
+        /// <param name="attributeName">The name of the attribute of the item to find</param>
+        /// <param name="attributeValue">The value of the attribute of the item to find</param>
+        /// <param name="comparison">The type of comparison to perform when comparing the value of the attribute</param>
+        /// <param name="returnAttribute">The attribute of the item to to be returned upon finding the item in the table</param>
+        /// <returns>An item's attributes</returns>
         public Dictionary<String, Object> ScanReturnItem(String tableName, String attributeName, Object attributeValue, ComparisonOperator comparison, String returnAttribute)
         {
             return ScanReturnItem(tableName, attributeName, attributeValue, comparison, new List<String>() { returnAttribute });
         }
+
+        /// <summary>
+        /// Scans for an item in a table
+        /// </summary>
+        /// <param name="tableName">The name of the table to scan</param>
+        /// <param name="attributeName">The name of the attribute of the item to find</param>
+        /// <param name="attributeValue">The value of the attribute of the item to find</param>
+        /// <param name="comparison">The type of comparison to perform when comparing the value of the attribute</param>
+        /// <param name="returnAttributes">The attributes of the item to to be returned upon finding the item in the table</param>
+        /// <returns>An item's attributes</returns>
         public Dictionary<String, Object> ScanReturnItem(String tableName, String attributeName, Object attributeValue, ComparisonOperator comparison, List<String> returnAttributes)
         {
             ScanRequest scanRequest = new ScanRequest();
@@ -416,14 +447,43 @@ namespace AWS
             ScanResult scanResult = scanResponse.ScanResult;
             return ReturnedItem(scanResult.Items);
         }
+
+        /// <summary>
+        /// Scans for an item in a table
+        /// </summary>
+        /// <param name="tableName">The name of the table to scan</param>
+        /// <param name="attributeName">The name of the attribute of the item to find</param>
+        /// <param name="attributeValues">The values of the attribute of the item to find</param>
+        /// <param name="comparison">The type of comparison to perform when comparing the value of the attribute</param>
+        /// <returns>An item's attributes</returns>
         public Dictionary<String, Object> ScanReturnItem(String tableName, String attributeName, List<Object> attributeValues, ComparisonOperator comparison)
         {
             return ScanReturnItem(tableName, attributeName, attributeValues, comparison, new List<String>());
         }
+
+        /// <summary>
+        /// Scans for an item in a table
+        /// </summary>
+        /// <param name="tableName">The name of the table to scan</param>
+        /// <param name="attributeName">The name of the attribute of the item to find</param>
+        /// <param name="attributeValues">The values of the attribute of the item to find</param>
+        /// <param name="comparison">The type of comparison to perform when comparing the value of the attribute</param>
+        /// <param name="returnAttribute">The attribute of the item to to be returned upon finding the item in the table</param>
+        /// <returns>An item's attributes</returns>
         public Dictionary<String, Object> ScanReturnItem(String tableName, String attributeName, List<Object> attributeValues, ComparisonOperator comparison, String returnAttribute)
         {
             return ScanReturnItem(tableName, attributeName, attributeValues, comparison, new List<String>() { returnAttribute });
         }
+        
+        /// <summary>
+        /// Scans for an item in a table
+        /// </summary>
+        /// <param name="tableName">The name of the table to scan</param>
+        /// <param name="attributeName">The name of the attribute of the item to find</param>
+        /// <param name="attributeValues">The values of the attribute of the item to find</param>
+        /// <param name="comparison">The type of comparison to perform when comparing the value of the attribute</param>
+        /// <param name="returnAttributes">The attributes of the item to to be returned upon finding the item in the table</param>
+        /// <returns>An item's attributes</returns>
         public Dictionary<String, Object> ScanReturnItem(String tableName, String attributeName, List<Object> attributeValues, ComparisonOperator comparison, List<String> returnAttributes)
         {
             ScanRequest scanRequest = new ScanRequest();
@@ -444,14 +504,40 @@ namespace AWS
             ScanResult scanResult = scanResponse.ScanResult;
             return ReturnedItem(scanResult.Items);
         }
+
+        /// <summary>
+        /// Scans for an item in a table
+        /// </summary>
+        /// <param name="tableName">The name of the table to scan</param>
+        /// <param name="attribute">The attributes of the item to find</param>
+        /// <param name="comparison">The type of comparison to perform when comparing the value of the attribute</param>
+        /// <returns>An item's attributes</returns>
         public Dictionary<String, Object> ScanReturnItem(String tableName, Dictionary<String, Object> attributes, ComparisonOperator comparison)
         {
             return ScanReturnItem(tableName, attributes, comparison, new List<String>());
         }
+
+        /// <summary>
+        /// Scans for an item in a table
+        /// </summary>
+        /// <param name="tableName">The name of the table to scan</param>
+        /// <param name="attribute">The attributes of the item to find</param>
+        /// <param name="comparison">The type of comparison to perform when comparing the value of the attribute</param>
+        /// <param name="returnAttribute">The attribute of the item to to be returned upon finding the item in the table</param>
+        /// <returns>An item's attributes</returns>
         public Dictionary<String, Object> ScanReturnItem(String tableName, Dictionary<String, Object> attributes, ComparisonOperator comparison, String returnAttribute)
         {
             return ScanReturnItem(tableName, attributes, comparison, new List<String>() { returnAttribute });
         }
+
+        /// <summary>
+        /// Scans for an item in a table
+        /// </summary>
+        /// <param name="tableName">The name of the table to scan</param>
+        /// <param name="attribute">The attributes of the item to find</param>
+        /// <param name="comparison">The type of comparison to perform when comparing the value of the attribute</param>
+        /// <param name="returnAttributes">The attributes of the item to to be returned upon finding the item in the table</param>
+        /// <returns>An item's attributes</returns>
         public Dictionary<String, Object> ScanReturnItem(String tableName, Dictionary<String, Object> attributes, ComparisonOperator comparison, List<String> returnAttributes)
         {
             ScanRequest scanRequest = new ScanRequest();
@@ -470,14 +556,40 @@ namespace AWS
             ScanResult scanResult = scanResponse.ScanResult;
             return ReturnedItem(scanResult.Items);
         }
+
+        /// <summary>
+        /// Scans for an item in a table
+        /// </summary>
+        /// <param name="tableName">The name of the table to scan</param>
+        /// <param name="attributes">The attributes of the item to find with mutiple values to compare</param>
+        /// <param name="comparison">The type of comparison to perform when comparing the value of the attribute</param>
+        /// <returns>An item's attributes</returns>
         public Dictionary<String, Object> ScanReturnItem(String tableName, Dictionary<String, List<Object>> attributes, ComparisonOperator comparison)
         {
             return ScanReturnItem(tableName, attributes, comparison, new List<String>());
         }
+
+        /// <summary>
+        /// Scans for an item in a table
+        /// </summary>
+        /// <param name="tableName">The name of the table to scan</param>
+        /// <param name="attributes">The attributes of the item to find with mutiple values to compare</param>
+        /// <param name="comparison">The type of comparison to perform when comparing the value of the attribute</param>
+        /// <param name="returnAttribute">The attribute of the item to to be returned upon finding the item in the table</param>
+        /// <returns>An item's attributes</returns>
         public Dictionary<String, Object> ScanReturnItem(String tableName, Dictionary<String, List<Object>> attributes, ComparisonOperator comparison, String returnAttribute)
         {
             return ScanReturnItem(tableName, attributes, comparison, new List<String>() { returnAttribute });
         }
+
+        /// <summary>
+        /// Scans for an item in a table
+        /// </summary>
+        /// <param name="tableName">The name of the table to scan</param>
+        /// <param name="attributes">The attributes of the item to find with mutiple values to compare</param>
+        /// <param name="comparison">The type of comparison to perform when comparing the value of the attribute</param>
+        /// <param name="returnAttributes">The attributes of the item to to be returned upon finding the item in the table</param>
+        /// <returns>An item's attributes</returns>
         public Dictionary<String, Object> ScanReturnItem(String tableName, Dictionary<String, List<Object>> attributes, ComparisonOperator comparison, List<String> returnAttributes)
         {
             ScanRequest scanRequest = new ScanRequest();
@@ -504,14 +616,42 @@ namespace AWS
         #endregion
 
         #region ScanReturnItems
+        /// <summary>
+        /// Scans for an items in a table
+        /// </summary>
+        /// <param name="tableName">The name of the table to scan</param>
+        /// <param name="attributeName">The name of the attribute of the item to find</param>
+        /// <param name="attributeValue">The value of the attribute of the item to find</param>
+        /// <param name="comparison">The type of comparison to perform when comparing the value of the attribute</param>
+        /// <returns>Multiple items with their attributes</returns>
         public List<Dictionary<String, Object>> ScanReturnItems(String tableName, String attributeName, Object attributeValue, ComparisonOperator comparison)
         {
             return ScanReturnItems(tableName, attributeName, attributeValue, comparison, new List<String>());
         }
+
+        /// <summary>
+        /// Scans for an items in a table
+        /// </summary>
+        /// <param name="tableName">The name of the table to scan</param>
+        /// <param name="attributeName">The name of the attribute of the item to find</param>
+        /// <param name="attributeValue">The value of the attribute of the item to find</param>
+        /// <param name="comparison">The type of comparison to perform when comparing the value of the attribute</param>
+        /// <param name="returnAttribute">The attribute of the item to to be returned upon finding the item in the table</param>
+        /// <returns>Multiple items with their attributes</returns>
         public List<Dictionary<String, Object>> ScanReturnItems(String tableName, String attributeName, Object attributeValue, ComparisonOperator comparison, String returnAttribute)
         {
             return ScanReturnItems(tableName, attributeName, attributeValue, comparison, new List<String>() { returnAttribute });
         }
+
+        /// <summary>
+        /// Scans for an items in a table
+        /// </summary>
+        /// <param name="tableName">The name of the table to scan</param>
+        /// <param name="attributeName">The name of the attribute of the item to find</param>
+        /// <param name="attributeValue">The value of the attribute of the item to find</param>
+        /// <param name="comparison">The type of comparison to perform when comparing the value of the attribute</param>
+        /// <param name="returnAttributes">The attributes of the item to to be returned upon finding the item in the table</param>
+        /// <returns>Multiple items with their attributes</returns>
         public List<Dictionary<String, Object>> ScanReturnItems(String tableName, String attributeName, Object attributeValue, ComparisonOperator comparison, List<String> returnAttributes)
         {
             ScanRequest scanRequest = new ScanRequest();
@@ -541,14 +681,43 @@ namespace AWS
             ScanResult scanResult = scanResponse.ScanResult;
             return ReturnedItems(scanResult.Items);
         }
+
+        /// <summary>
+        /// Scans for an items in a table
+        /// </summary>
+        /// <param name="tableName">The name of the table to scan</param>
+        /// <param name="attributeName">The name of the attribute of the item to find</param>
+        /// <param name="attributeValues">The values of the attribute of the item to find</param>
+        /// <param name="comparison">The type of comparison to perform when comparing the value of the attribute</param>
+        /// <returns>Multiple items with their attributes</returns>
         public List<Dictionary<String, Object>> ScanReturnItems(String tableName, String attributeName, List<Object> attributeValues, ComparisonOperator comparison)
         {
             return ScanReturnItems(tableName, attributeName, attributeValues, comparison, new List<String>());
         }
+
+        /// <summary>
+        /// Scans for an items in a table
+        /// </summary>
+        /// <param name="tableName">The name of the table to scan</param>
+        /// <param name="attributeName">The name of the attribute of the item to find</param>
+        /// <param name="attributeValues">The values of the attribute of the item to find</param>
+        /// <param name="comparison">The type of comparison to perform when comparing the value of the attribute</param>
+        /// <param name="returnAttribute">The attribute of the item to to be returned upon finding the item in the table</param>
+        /// <returns>Multiple items with their attributes</returns>
         public List<Dictionary<String, Object>> ScanReturnItems(String tableName, String attributeName, List<Object> attributeValues, ComparisonOperator comparison, String returnAttribute)
         {
             return ScanReturnItems(tableName, attributeName, attributeValues, comparison, new List<String>() { returnAttribute });
         }
+
+        /// <summary>
+        /// Scans for an items in a table
+        /// </summary>
+        /// <param name="tableName">The name of the table to scan</param>
+        /// <param name="attributeName">The name of the attribute of the item to find</param>
+        /// <param name="attributeValues">The values of the attribute of the item to find</param>
+        /// <param name="comparison">The type of comparison to perform when comparing the value of the attribute</param>
+        /// <param name="returnAttributes">The attributes of the item to to be returned upon finding the item in the table</param>
+        /// <returns>Multiple items with their attributes</returns>
         public List<Dictionary<String, Object>> ScanReturnItems(String tableName, String attributeName, List<Object> attributeValues, ComparisonOperator comparison, List<String> returnAttributes)
         {
             ScanRequest scanRequest = new ScanRequest();
@@ -568,14 +737,40 @@ namespace AWS
             ScanResult scanResult = scanResponse.ScanResult;
             return ReturnedItems(scanResult.Items);
         }
+
+        /// <summary>
+        /// Scans for an items in a table
+        /// </summary>
+        /// <param name="tableName">The name of the table to scan</param>
+        /// <param name="attribute">The attributes of the item to find</param>
+        /// <param name="comparison">The type of comparison to perform when comparing the value of the attribute</param>
+        /// <returns>Multiple items with their attributes</returns>
         public List<Dictionary<String, Object>> ScanReturnItems(String tableName, Dictionary<String, Object> attributes, ComparisonOperator comparison)
         {
             return ScanReturnItems(tableName, attributes, comparison, new List<String>());
         }
+
+        /// <summary>
+        /// Scans for an items in a table
+        /// </summary>
+        /// <param name="tableName">The name of the table to scan</param>
+        /// <param name="attribute">The attributes of the item to find</param>
+        /// <param name="comparison">The type of comparison to perform when comparing the value of the attribute</param>
+        /// <param name="returnAttribute">The attribute of the item to to be returned upon finding the item in the table</param>
+        /// <returns>Multiple items with their attributes</returns>
         public List<Dictionary<String, Object>> ScanReturnItems(String tableName, Dictionary<String, Object> attributes, ComparisonOperator comparison, String returnAttribute)
         {
             return ScanReturnItems(tableName, attributes, comparison, new List<String>() { returnAttribute });
         }
+
+        /// <summary>
+        /// Scans for an items in a table
+        /// </summary>
+        /// <param name="tableName">The name of the table to scan</param>
+        /// <param name="attribute">The attributes of the item to find</param>
+        /// <param name="comparison">The type of comparison to perform when comparing the value of the attribute</param>
+        /// <param name="returnAttributes">The attributes of the item to to be returned upon finding the item in the table</param>
+        /// <returns>Multiple items with their attributes</returns>
         public List<Dictionary<String, Object>> ScanReturnItems(String tableName, Dictionary<String, Object> attributes, ComparisonOperator comparison, List<String> returnAttributes)
         {
             ScanRequest scanRequest = new ScanRequest();
@@ -594,14 +789,40 @@ namespace AWS
             ScanResult scanResult = scanResponse.ScanResult;
             return ReturnedItems(scanResult.Items);
         }
+
+        /// <summary>
+        /// Scans for an items in a table
+        /// </summary>
+        /// <param name="tableName">The name of the table to scan</param>
+        /// <param name="attributes">The attributes of the item to find with mutiple values to compare</param>
+        /// <param name="comparison">The type of comparison to perform when comparing the value of the attribute</param>
+        /// <returns>Multiple items with their attributes</returns>
         public List<Dictionary<String, Object>> ScanReturnItems(String tableName, Dictionary<String, List<Object>> attributes, ComparisonOperator comparison)
         {
             return ScanReturnItems(tableName, attributes, comparison, new List<String>());
         }
+
+        /// <summary>
+        /// Scans for an items in a table
+        /// </summary>
+        /// <param name="tableName">The name of the table to scan</param>
+        /// <param name="attributes">The attributes of the item to find with mutiple values to compare</param>
+        /// <param name="comparison">The type of comparison to perform when comparing the value of the attribute</param>
+        /// <param name="returnAttribute">The attribute of the item to to be returned upon finding the item in the table</param>
+        /// <returns>Multiple items with their attributes</returns>
         public List<Dictionary<String, Object>> ScanReturnItems(String tableName, Dictionary<String, List<Object>> attributes, ComparisonOperator comparison, String returnAttribute)
         {
             return ScanReturnItems(tableName, attributes, comparison, new List<String>() { returnAttribute });
         }
+
+        /// <summary>
+        /// Scans for an items in a table
+        /// </summary>
+        /// <param name="tableName">The name of the table to scan</param>
+        /// <param name="attributes">The attributes of the item to find with mutiple values to compare</param>
+        /// <param name="comparison">The type of comparison to perform when comparing the value of the attribute</param>
+        /// <param name="returnAttributes">The attributes of the item to to be returned upon finding the item in the table</param>
+        /// <returns>Multiple items with their attributes</returns>
         public List<Dictionary<String, Object>> ScanReturnItems(String tableName, Dictionary<String, List<Object>> attributes, ComparisonOperator comparison, List<String> returnAttributes)
         {
             ScanRequest scanRequest = new ScanRequest();
