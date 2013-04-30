@@ -1,7 +1,7 @@
-aws-high-level-sdk-csharp
+Simple AWS SDK C#
 =========================
 
-A High Level AWS SDK written in C#
+A Simple AWS SDK written in C#
 
 Services under development:
 * Amazon Simple Queue Service
