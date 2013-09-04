@@ -23,6 +23,13 @@ Current Capabilities:
   * BatchWrite (Put & Delete)
   * Scan
 
+Update 0.2
+* Added Support for .NET 4.5/Windows Phone 8/WinRT.
+* Added Async Methods.
+* Added Unit Tests
+* Uses the AWSSDK 2.0.0.3 beta.
+* Restored NuGet.
+
 Update 0.1
 * Added Support for Mono / .NET 4.0.
 * Added S3 Library.

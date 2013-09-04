@@ -1,0 +1,138 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{04D5430C-415A-4AA0-8561-5180612FDFAF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AWS</RootNamespace>
+    <AssemblyName>AWS.Library.Net40</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AWSSDK, Version=2.0.0.3, Culture=neutral, PublicKeyToken=9f476d3089b52be3, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\AWSSDK.2.0.0.3-beta\lib\net35\AWSSDK.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="..\AWS.Library.Net45\DynamoDB\ComparisonOperator.cs">
+      <Link>DynamoDB\ComparisonOperator.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net45\DynamoDB\DynamoDBAttribute.cs">
+      <Link>DynamoDB\DynamoDBAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net45\DynamoDB\DynamoDBBatchWrite.cs">
+      <Link>DynamoDB\DynamoDBBatchWrite.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net45\DynamoDB\DynamoDBClient\Base.cs">
+      <Link>DynamoDB\DynamoDBClient\Base.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net45\DynamoDB\DynamoDBClient\Methods %28Normal%29.cs">
+      <Link>DynamoDB\DynamoDBClient\Methods %28Normal%29.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net45\DynamoDB\DynamoDBItem.cs">
+      <Link>DynamoDB\DynamoDBItem.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net45\DynamoDB\DynamoDBTableCache\Base.cs">
+      <Link>DynamoDB\DynamoDBTableCache\Base.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net45\DynamoDB\DynamoDBTableCache\Methods %28Normal%29.cs">
+      <Link>DynamoDB\DynamoDBTableCache\Methods %28Normal%29.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net45\DynamoDB\DynamoDBTable\Base.cs">
+      <Link>DynamoDB\DynamoDBTable\Base.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net45\DynamoDB\DynamoDBTable\Methods %28Normal%29.cs">
+      <Link>DynamoDB\DynamoDBTable\Methods %28Normal%29.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net45\DynamoDB\Exceptions\DynamoDBItemException.cs">
+      <Link>DynamoDB\Exceptions\DynamoDBItemException.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net45\DynamoDB\Exceptions\DynamoDBItemExceptions.cs">
+      <Link>DynamoDB\Exceptions\DynamoDBItemExceptions.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net45\DynamoDB\Exceptions\DynamoDBTableException.cs">
+      <Link>DynamoDB\Exceptions\DynamoDBTableException.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net45\DynamoDB\Exceptions\DynamoDBTableExceptions.cs">
+      <Link>DynamoDB\Exceptions\DynamoDBTableExceptions.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net45\DynamoDB\Types.cs">
+      <Link>DynamoDB\Types.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net45\DynamoDB\UpdateAction.cs">
+      <Link>DynamoDB\UpdateAction.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net45\S3\S3Bucket\Base.cs">
+      <Link>S3\S3Bucket\Base.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net45\S3\S3Bucket\Methods %28Normal%29.cs">
+      <Link>S3\S3Bucket\Methods %28Normal%29.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net45\S3\S3Bucket\old class.cs">
+      <Link>S3\S3Bucket\old class.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net45\S3\S3Object.cs">
+      <Link>S3\S3Object.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net45\S3\S3ObjectKey.cs">
+      <Link>S3\S3ObjectKey.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net45\SimpleDB\SimpleDBAttribute.cs">
+      <Link>SimpleDB\SimpleDBAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net45\SimpleDB\SimpleDBClient.cs">
+      <Link>SimpleDB\SimpleDBClient.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net45\SimpleDB\SimpleDBDomain.cs">
+      <Link>SimpleDB\SimpleDBDomain.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net45\SimpleDB\SimpleDBItem.cs">
+      <Link>SimpleDB\SimpleDBItem.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net45\SQS\SQSQueue.cs">
+      <Link>SQS\SQSQueue.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
