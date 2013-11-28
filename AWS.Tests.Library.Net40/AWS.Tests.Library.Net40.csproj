@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NET20; NET35; NET40</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -40,20 +40,26 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\AWS.Tests.Library.Net45\AWSCredentials.cs">
+    <Compile Include="..\AWS.Tests.Library.Net451\AWSCredentials.cs">
       <Link>AWSCredentials.cs</Link>
     </Compile>
-    <Compile Include="..\AWS.Tests.Library.Net45\DynamoDBClientTests.cs">
-      <Link>DynamoDBClientTests.cs</Link>
+    <Compile Include="..\AWS.Tests.Library.Net451\DynamoDB\DynamoDBClientTests.cs">
+      <Link>DynamoDB\DynamoDBClientTests.cs</Link>
     </Compile>
-    <Compile Include="..\AWS.Tests.Library.Net45\DynamoDBTableCacheTests.cs">
-      <Link>DynamoDBTableCacheTests.cs</Link>
+    <Compile Include="..\AWS.Tests.Library.Net451\DynamoDB\DynamoDBTableCacheTests.cs">
+      <Link>DynamoDB\DynamoDBTableCacheTests.cs</Link>
     </Compile>
-    <Compile Include="..\AWS.Tests.Library.Net45\DynamoDBTableTests.cs">
-      <Link>DynamoDBTableTests.cs</Link>
+    <Compile Include="..\AWS.Tests.Library.Net451\DynamoDB\DynamoDBTableTests.cs">
+      <Link>DynamoDB\DynamoDBTableTests.cs</Link>
     </Compile>
-    <Compile Include="..\AWS.Tests.Library.Net45\DynamoDBTests.cs">
-      <Link>DynamoDBTests.cs</Link>
+    <Compile Include="..\AWS.Tests.Library.Net451\DynamoDB\DynamoDBTests.cs">
+      <Link>DynamoDB\DynamoDBTests.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Tests.Library.Net451\SQS\SQSQueueTests.cs">
+      <Link>SQS\SQSQueueTests.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Tests.Library.Net451\SQS\SQSTests.cs">
+      <Link>SQS\SQSTests.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

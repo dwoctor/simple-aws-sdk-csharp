@@ -24,7 +24,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>Bin\Debug</OutputPath>
-    <DefineConstants>DEBUG;TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;SILVERLIGHT;WINDOWS_PHONE; NET20; NET35; NET40; NET45; WINDOWSPHONE</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
@@ -34,7 +34,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>Bin\Release</OutputPath>
-    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE; NET20; NET35; NET40; NET45; WINDOWSPHONE</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
@@ -83,65 +83,116 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\AWS.Library.Net45\DynamoDB\ComparisonOperator.cs">
+    <Compile Include="..\AWS.Library.Net451\DynamoDB\ComparisonOperator.cs">
       <Link>DynamoDB\ComparisonOperator.cs</Link>
     </Compile>
-    <Compile Include="..\AWS.Library.Net45\DynamoDB\DynamoDBAttribute.cs">
+    <Compile Include="..\AWS.Library.Net451\DynamoDB\DynamoDBAttribute.cs">
       <Link>DynamoDB\DynamoDBAttribute.cs</Link>
     </Compile>
-    <Compile Include="..\AWS.Library.Net45\DynamoDB\DynamoDBBatchWrite.cs">
+    <Compile Include="..\AWS.Library.Net451\DynamoDB\DynamoDBBatchWrite.cs">
       <Link>DynamoDB\DynamoDBBatchWrite.cs</Link>
     </Compile>
-    <Compile Include="..\AWS.Library.Net45\DynamoDB\DynamoDBClient\Base.cs">
-      <Link>DynamoDB\DynamoDBClient\Base.cs</Link>
+    <Compile Include="..\AWS.Library.Net451\DynamoDB\DynamoDBClient.cs">
+      <Link>DynamoDB\DynamoDBClient.cs</Link>
     </Compile>
-    <Compile Include="..\AWS.Library.Net45\DynamoDB\DynamoDBClient\Methods %28Async%29.cs">
-      <Link>DynamoDB\DynamoDBClient\Methods %28Async%29.cs</Link>
-    </Compile>
-    <Compile Include="..\AWS.Library.Net45\DynamoDB\DynamoDBItem.cs">
+    <Compile Include="..\AWS.Library.Net451\DynamoDB\DynamoDBItem.cs">
       <Link>DynamoDB\DynamoDBItem.cs</Link>
     </Compile>
-    <Compile Include="..\AWS.Library.Net45\DynamoDB\DynamoDBTableCache\Base.cs">
-      <Link>DynamoDB\DynamoDBTableCache\Base.cs</Link>
+    <Compile Include="..\AWS.Library.Net451\DynamoDB\DynamoDBTable.cs">
+      <Link>DynamoDB\DynamoDBTable.cs</Link>
     </Compile>
-    <Compile Include="..\AWS.Library.Net45\DynamoDB\DynamoDBTableCache\Methods %28Async%29.cs">
-      <Link>DynamoDB\DynamoDBTableCache\Methods %28Async%29.cs</Link>
+    <Compile Include="..\AWS.Library.Net451\DynamoDB\DynamoDBTableCache.cs">
+      <Link>DynamoDB\DynamoDBTableCache.cs</Link>
     </Compile>
-    <Compile Include="..\AWS.Library.Net45\DynamoDB\DynamoDBTable\Base.cs">
-      <Link>DynamoDB\DynamoDBTable\Base.cs</Link>
+    <Compile Include="..\AWS.Library.Net451\DynamoDB\Exceptions\DynamoDBAttributeException.cs">
+      <Link>DynamoDB\Exceptions\DynamoDBAttributeException.cs</Link>
     </Compile>
-    <Compile Include="..\AWS.Library.Net45\DynamoDB\DynamoDBTable\Methods %28Async%29.cs">
-      <Link>DynamoDB\DynamoDBTable\Methods %28Async%29.cs</Link>
+    <Compile Include="..\AWS.Library.Net451\DynamoDB\Exceptions\DynamoDBBatchWriteException.cs">
+      <Link>DynamoDB\Exceptions\DynamoDBBatchWriteException.cs</Link>
     </Compile>
-    <Compile Include="..\AWS.Library.Net45\DynamoDB\Exceptions\DynamoDBItemException.cs">
+    <Compile Include="..\AWS.Library.Net451\DynamoDB\Exceptions\DynamoDBClientException.cs">
+      <Link>DynamoDB\Exceptions\DynamoDBClientException.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net451\DynamoDB\Exceptions\DynamoDBItemException.cs">
       <Link>DynamoDB\Exceptions\DynamoDBItemException.cs</Link>
     </Compile>
-    <Compile Include="..\AWS.Library.Net45\DynamoDB\Exceptions\DynamoDBItemExceptions.cs">
-      <Link>DynamoDB\Exceptions\DynamoDBItemExceptions.cs</Link>
+    <Compile Include="..\AWS.Library.Net451\DynamoDB\Exceptions\DynamoDBTableCacheException.cs">
+      <Link>DynamoDB\Exceptions\DynamoDBTableCacheException.cs</Link>
     </Compile>
-    <Compile Include="..\AWS.Library.Net45\DynamoDB\Exceptions\DynamoDBTableException.cs">
+    <Compile Include="..\AWS.Library.Net451\DynamoDB\Exceptions\DynamoDBTableException.cs">
       <Link>DynamoDB\Exceptions\DynamoDBTableException.cs</Link>
     </Compile>
-    <Compile Include="..\AWS.Library.Net45\DynamoDB\Exceptions\DynamoDBTableExceptions.cs">
-      <Link>DynamoDB\Exceptions\DynamoDBTableExceptions.cs</Link>
-    </Compile>
-    <Compile Include="..\AWS.Library.Net45\DynamoDB\Types.cs">
+    <Compile Include="..\AWS.Library.Net451\DynamoDB\Types.cs">
       <Link>DynamoDB\Types.cs</Link>
     </Compile>
-    <Compile Include="..\AWS.Library.Net45\DynamoDB\UpdateAction.cs">
+    <Compile Include="..\AWS.Library.Net451\DynamoDB\UpdateAction.cs">
       <Link>DynamoDB\UpdateAction.cs</Link>
     </Compile>
-    <Compile Include="..\AWS.Library.Net45\S3\S3Bucket\Base.cs">
-      <Link>S3\S3Bucket\Base.cs</Link>
+    <Compile Include="..\AWS.Library.Net451\S3\Exceptions\S3BucketException.cs">
+      <Link>S3\Exceptions\S3BucketException.cs</Link>
     </Compile>
-    <Compile Include="..\AWS.Library.Net45\S3\S3Bucket\Methods %28Async%29.cs">
-      <Link>S3\S3Bucket\Methods %28Async%29.cs</Link>
+    <Compile Include="..\AWS.Library.Net451\S3\Exceptions\S3ClientException.cs">
+      <Link>S3\Exceptions\S3ClientException.cs</Link>
     </Compile>
-    <Compile Include="..\AWS.Library.Net45\S3\S3Object.cs">
+    <Compile Include="..\AWS.Library.Net451\S3\Exceptions\S3ObjectException.cs">
+      <Link>S3\Exceptions\S3ObjectException.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net451\S3\Exceptions\S3ObjectKeyException.cs">
+      <Link>S3\Exceptions\S3ObjectKeyException.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net451\S3\S3Bucket.cs">
+      <Link>S3\S3Bucket.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net451\S3\S3Client.cs">
+      <Link>S3\S3Client.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net451\S3\S3Object.cs">
       <Link>S3\S3Object.cs</Link>
     </Compile>
-    <Compile Include="..\AWS.Library.Net45\S3\S3ObjectKey.cs">
+    <Compile Include="..\AWS.Library.Net451\S3\S3ObjectKey.cs">
       <Link>S3\S3ObjectKey.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net451\SimpleDB\Exceptions\SimpleDBAttributeException.cs">
+      <Link>SimpleDB\Exceptions\SimpleDBAttributeException.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net451\SimpleDB\Exceptions\SimpleDBClientException.cs">
+      <Link>SimpleDB\Exceptions\SimpleDBClientException.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net451\SimpleDB\Exceptions\SimpleDBDomainException.cs">
+      <Link>SimpleDB\Exceptions\SimpleDBDomainException.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net451\SimpleDB\Exceptions\SimpleDBItemException.cs">
+      <Link>SimpleDB\Exceptions\SimpleDBItemException.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net451\SimpleDB\SimpleDBAttribute.cs">
+      <Link>SimpleDB\SimpleDBAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net451\SimpleDB\SimpleDBClient.cs">
+      <Link>SimpleDB\SimpleDBClient.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net451\SimpleDB\SimpleDBDomain.cs">
+      <Link>SimpleDB\SimpleDBDomain.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net451\SimpleDB\SimpleDBItem.cs">
+      <Link>SimpleDB\SimpleDBItem.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net451\SQS\Exceptions\SQSClientException.cs">
+      <Link>SQS\Exceptions\SQSClientException.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net451\SQS\Exceptions\SQSMessageException.cs">
+      <Link>SQS\Exceptions\SQSMessageException.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net451\SQS\Exceptions\SQSQueueException.cs">
+      <Link>SQS\Exceptions\SQSQueueException.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net451\SQS\SQSClient.cs">
+      <Link>SQS\SQSClient.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net451\SQS\SQSMessage.cs">
+      <Link>SQS\SQSMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Library.Net451\SQS\SQSQueue.cs">
+      <Link>SQS\SQSQueue.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -149,9 +200,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="AWSSDK, Version=2.0.0.3, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="AWSSDK, Version=2.0.2.3, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\AWSSDK.2.0.0.3-beta\lib\windowsphone8\AWSSDK.dll</HintPath>
+      <HintPath>..\packages\AWSSDK.2.0.2.3\lib\windowsphone8\AWSSDK.dll</HintPath>
     </Reference>
     <Reference Include="System.Net.Http, Version=1.5.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -169,15 +220,10 @@
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
   <ProjectExtensions />
-  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.9-beta\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.9-beta\tools\Microsoft.Bcl.Build.targets')" />
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" />
   <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
-    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.9-beta\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
-    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.9-beta\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
-  </Target>
-  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets')" />
-  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
-    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
-    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.10\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.13\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

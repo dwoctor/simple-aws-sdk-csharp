@@ -17,7 +17,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NET20; NET35; NET40; NET45</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -39,11 +39,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AWSCredentials.cs" />
-    <Compile Include="DynamoDBClientTests.cs" />
-    <Compile Include="DynamoDBTableCacheTests.cs" />
-    <Compile Include="DynamoDBTableTests.cs" />
-    <Compile Include="DynamoDBTests.cs" />
+    <Compile Include="..\AWS.Tests.Library.Net451\AWSCredentials.cs">
+      <Link>AWSCredentials.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Tests.Library.Net451\DynamoDB\DynamoDBClientTests.cs">
+      <Link>DynamoDB\DynamoDBClientTests.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Tests.Library.Net451\DynamoDB\DynamoDBTableCacheTests.cs">
+      <Link>DynamoDB\DynamoDBTableCacheTests.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Tests.Library.Net451\DynamoDB\DynamoDBTableTests.cs">
+      <Link>DynamoDB\DynamoDBTableTests.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Tests.Library.Net451\DynamoDB\DynamoDBTests.cs">
+      <Link>DynamoDB\DynamoDBTests.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Tests.Library.Net451\SQS\SQSQueueTests.cs">
+      <Link>SQS\SQSQueueTests.cs</Link>
+    </Compile>
+    <Compile Include="..\AWS.Tests.Library.Net451\SQS\SQSTests.cs">
+      <Link>SQS\SQSTests.cs</Link>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -52,6 +68,7 @@
       <Name>AWS.Library.Net45</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
