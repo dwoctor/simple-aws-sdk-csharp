@@ -21,11 +21,11 @@ namespace AWS.DynamoDB
 		/// Constructs a DynamoDBTableCache
 		/// </summary>
 		/// <param name="cacheSize">The size of the Cache in bytes (default value is 104857600 bytes or 100 mb)</param>
-		public DynamoDBTableCache(String accessKey, String secretAccessKey, String tableName, UInt64 cacheSize = 104857600)
+		public DynamoDBTableCache(AWSCredentials awsCredentials, String tableName, UInt64 cacheSize = 104857600)
 		{
 			try
 			{
-				_table = new DynamoDBTable(accessKey, secretAccessKey, tableName);
+                _table = new DynamoDBTable(awsCredentials, tableName);
 			}
 			catch (Exception error)
 			{

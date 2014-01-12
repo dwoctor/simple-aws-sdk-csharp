@@ -22,11 +22,12 @@ namespace AWS.S3
         /// <summary>
         /// Constructs a S3 Bucket
         /// </summary>
-        public S3Bucket(String accessKey, String secretAccessKey, String bucketName)
+        /// <param name="awsCredentials">AWS Credentials</param>
+        public S3Bucket(AWSCredentials awsCredentials, String bucketName)
         {
             try
             {
-                _s3 = new AmazonS3Client(accessKey, secretAccessKey);
+                _s3 = new AmazonS3Client(awsCredentials.AccessKey, awsCredentials.SecretAccessKey, awsCredentials.Region);
                 Name = bucketName;
             }
             catch (Exception error)
@@ -43,16 +44,15 @@ namespace AWS.S3
         /// <summary>
         /// Creates a bucket associated with an aws account
         /// </summary>
-        /// <param name="accessKey">The access key of the aws account</param>
-        /// <param name="secretAccessKey">The secret access key of the aws account</param>
+        /// <param name="awsCredentials">AWS Credentials</param>
         /// <param name="bucketName">The name of the bucket to create</param>
-        public static S3Bucket CreateBucket(String accessKey, String secretAccessKey, String bucketName)
+        public static S3Bucket CreateBucket(AWSCredentials awsCredentials, String bucketName)
         {
             try
             {
-                AmazonS3Client s3 = new AmazonS3Client(accessKey, secretAccessKey);
+                AmazonS3Client s3 = new AmazonS3Client(awsCredentials.AccessKey, awsCredentials.SecretAccessKey, awsCredentials.Region);
                 PutBucketResponse putBucketResponse = s3.PutBucket(new PutBucketRequest() { BucketName = bucketName, UseClientRegion = true });
-                return new S3Bucket(accessKey, secretAccessKey, bucketName);
+                return new S3Bucket(awsCredentials, bucketName);
             }
             catch (Exception error)
             {
@@ -63,14 +63,13 @@ namespace AWS.S3
         /// <summary>
         /// Delete a bucket associated with an aws account
         /// </summary>
-        /// <param name="accessKey">The access key of the aws account</param>
-        /// <param name="secretAccessKey">The secret access key of the aws account</param>
+        /// <param name="awsCredentials">AWS Credentials</param>
         /// <param name="bucketName">The name of the bucket</param>
-        public static void DeleteBucket(String accessKey, String secretAccessKey, String bucketName)
+        public static void DeleteBucket(AWSCredentials awsCredentials, String bucketName)
         {
             try
             {
-                AmazonS3Client s3 = new AmazonS3Client(accessKey, secretAccessKey);
+                AmazonS3Client s3 = new AmazonS3Client(awsCredentials.AccessKey, awsCredentials.SecretAccessKey, awsCredentials.Region);
                 DeleteBucketResponse deleteBucketResponse = s3.DeleteBucket(new DeleteBucketRequest() { BucketName = bucketName, UseClientRegion = true });
             }
             catch (Exception error)
@@ -82,18 +81,17 @@ namespace AWS.S3
         /// <summary>
         /// Gets a list of all the buckets associated with an aws account
         /// </summary>
-        /// <param name="accessKey">The access key of the aws account</param>
-        /// <param name="secretAccessKey">The secret access key of the aws account</param>
-        public static List<S3Bucket> GetListOfBuckets(String accesskey, String secretAccessKey)
+        /// <param name="awsCredentials">AWS Credentials</param>
+        public static List<S3Bucket> GetListOfBuckets(AWSCredentials awsCredentials)
         {
             try
             {
                 List<S3Bucket> buckets = new List<S3Bucket>();
-                AmazonS3Client s3 = new AmazonS3Client(accesskey, secretAccessKey);
+                AmazonS3Client s3 = new AmazonS3Client(awsCredentials.AccessKey, awsCredentials.SecretAccessKey, awsCredentials.Region);
                 ListBucketsResponse listBucketsResponse = s3.ListBuckets(new ListBucketsRequest());
                 foreach (var bucket in listBucketsResponse.Buckets)
                 {
-                    buckets.Add(new S3Bucket(accesskey, secretAccessKey, bucket.BucketName));
+                    buckets.Add(new S3Bucket(awsCredentials, bucket.BucketName));
                 }
                 return buckets;
             }
@@ -197,16 +195,15 @@ namespace AWS.S3
         /// <summary>
         /// Creates a bucket associated with an aws account
         /// </summary>
-        /// <param name="accessKey">The access key of the aws account</param>
-        /// <param name="secretAccessKey">The secret access key of the aws account</param>
+        /// <param name="awsCredentials">AWS Credentials</param>
         /// <param name="bucketName">The name of the bucket to create</param>
-        public async static Task<S3Bucket> CreateBucketAsync(String accessKey, String secretAccessKey, String bucketName)
+        public async static Task<S3Bucket> CreateBucketAsync(AWSCredentials awsCredentials, String bucketName)
         {
             try
             {
-                AmazonS3Client s3 = new AmazonS3Client(accessKey, secretAccessKey);
+                AmazonS3Client s3 = new AmazonS3Client(awsCredentials.AccessKey, awsCredentials.SecretAccessKey, awsCredentials.Region);
                 PutBucketResponse putBucketResponse = await s3.PutBucketAsync(new PutBucketRequest() { BucketName = bucketName, UseClientRegion = true });
-                return new S3Bucket(accessKey, secretAccessKey, bucketName);
+                return new S3Bucket(awsCredentials, bucketName);
             }
             catch (Exception error)
             {
@@ -217,14 +214,13 @@ namespace AWS.S3
         /// <summary>
         /// Delete a bucket associated with an aws account
         /// </summary>
-        /// <param name="accessKey">The access key of the aws account</param>
-        /// <param name="secretAccessKey">The secret access key of the aws account</param>
+        /// <param name="awsCredentials">AWS Credentials</param>
         /// <param name="bucketName">The name of the bucket</param>
-        public async static Task DeleteBucketAsync(String accessKey, String secretAccessKey, String bucketName)
+        public async static Task DeleteBucketAsync(AWSCredentials awsCredentials, String bucketName)
         {
             try
             {
-                AmazonS3Client s3 = new AmazonS3Client(accessKey, secretAccessKey);
+                AmazonS3Client s3 = new AmazonS3Client(awsCredentials.AccessKey, awsCredentials.SecretAccessKey, awsCredentials.Region);
                 DeleteBucketResponse deleteBucketResponse = await s3.DeleteBucketAsync(new DeleteBucketRequest() { BucketName = bucketName, UseClientRegion = true });
             }
             catch (Exception error)
@@ -236,18 +232,17 @@ namespace AWS.S3
         /// <summary>
         /// Gets a list of all the buckets associated with an aws account
         /// </summary>
-        /// <param name="accessKey">The access key of the aws account</param>
-        /// <param name="secretAccessKey">The secret access key of the aws account</param>
-        public async static Task<List<S3Bucket>> GetListOfBucketsAsync(String accesskey, String secretAccessKey)
+        /// <param name="awsCredentials">AWS Credentials</param>
+        public async static Task<List<S3Bucket>> GetListOfBucketsAsync(AWSCredentials awsCredentials)
         {
             try
             {
                 List<S3Bucket> buckets = new List<S3Bucket>();
-                AmazonS3Client s3 = new AmazonS3Client(accesskey, secretAccessKey);
+                AmazonS3Client s3 = new AmazonS3Client(awsCredentials.AccessKey, awsCredentials.SecretAccessKey, awsCredentials.Region);
                 ListBucketsResponse listBucketsResponse = await s3.ListBucketsAsync(new ListBucketsRequest());
                 foreach (var bucket in listBucketsResponse.Buckets)
                 {
-                    buckets.Add(new S3Bucket(accesskey, secretAccessKey, bucket.BucketName));
+                    buckets.Add(new S3Bucket(awsCredentials, bucket.BucketName));
                 }
                 return buckets;
             }

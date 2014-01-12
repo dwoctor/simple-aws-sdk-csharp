@@ -50,6 +50,11 @@ Current Capabilities:
   * ClearQueue
   * ClearQueue (Async)
 
+Update 0.3.1
+* Updated Authentication. (Now requires a region to be selected)
+* Updated CreateTable / CreateTable(Async)
+* Updated Tests
+
 Update 0.3
 * Added Support for .NET 4.5.1 / WinRT (Windows 8.1).
 * Improved SimpleDB Library.

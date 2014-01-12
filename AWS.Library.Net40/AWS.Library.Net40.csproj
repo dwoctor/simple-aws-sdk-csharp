@@ -53,6 +53,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\AWS.Library.Net451\AWSCredentials.cs">
+      <Link>AWSCredentials.cs</Link>
+    </Compile>
     <Compile Include="..\AWS.Library.Net451\DynamoDB\ComparisonOperator.cs">
       <Link>DynamoDB\ComparisonOperator.cs</Link>
     </Compile>

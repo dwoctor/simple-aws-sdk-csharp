@@ -41,11 +41,11 @@ namespace AWS.DynamoDB
         /// <summary>
         /// The strings of the different types of data DynamoDB can store
         /// </summary>
-        internal static readonly Dictionary<Enum, KeyType> KeyType = new Dictionary<Enum, KeyType>()
+        internal static readonly Dictionary<Enum, ScalarAttributeType> ScalarAttributeType = new Dictionary<Enum, ScalarAttributeType>()
 		{
-			{Enum.String, new KeyType("S")},
-			{Enum.Number, new KeyType("N")},
-			{Enum.Binary, new KeyType("B")}
+			{Enum.String, new ScalarAttributeType("S")},
+			{Enum.Number, new ScalarAttributeType("N")},
+			{Enum.Binary, new ScalarAttributeType("B")}
 		};
 	}
 }

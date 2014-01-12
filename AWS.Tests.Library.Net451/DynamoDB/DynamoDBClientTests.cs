@@ -20,7 +20,7 @@ namespace AWS.Tests.Library
         {
             try
             {
-                AWS.DynamoDB.DynamoDBClient ddb = new AWS.DynamoDB.DynamoDBClient(AWSCredentials.AccessKey, AWSCredentials.SecretAccessKey);
+                AWS.DynamoDB.DynamoDBClient ddb = new AWS.DynamoDB.DynamoDBClient(TestCredentials.Credentials);
             }
             catch
             {
@@ -37,14 +37,14 @@ namespace AWS.Tests.Library
         {
             try
             {
-                AWS.DynamoDB.DynamoDBClient ddb = new DynamoDB.DynamoDBClient(AWSCredentials.AccessKey, AWSCredentials.SecretAccessKey);
+                AWS.DynamoDB.DynamoDBClient ddb = new DynamoDB.DynamoDBClient(TestCredentials.Credentials);
                 String tableName = _tableName;
                 Int64 readCapacityUnits = _readCapacityUnits;
                 Int64 writeCapacityUnits = _writeCapacityUnits;
-                String hashKeyName = _hashKeyName;
+                DynamoDBAttribute hashKey = _hashKeyAttributeNoValue;
                 try
                 {
-                    DynamoDBTable.CreateTable(AWSCredentials.AccessKey, AWSCredentials.SecretAccessKey, tableName, hashKeyName, Types.Enum.Number, readCapacityUnits, writeCapacityUnits);
+                    DynamoDBTable.CreateTable(TestCredentials.Credentials, tableName, hashKey, readCapacityUnits, writeCapacityUnits);
                     Thread.Sleep(60000);
                 }
                 catch (DynamoDBTableException) { }
@@ -55,7 +55,7 @@ namespace AWS.Tests.Library
                 DynamoDBTable table = ddb[tableName];
                 try
                 {
-                    DynamoDBTable.DeleteTable(AWSCredentials.AccessKey, AWSCredentials.SecretAccessKey, tableName);
+                    DynamoDBTable.DeleteTable(TestCredentials.Credentials, tableName);
                     Thread.Sleep(60000);
                 }
                 catch (DynamoDBTableException) { }
@@ -76,11 +76,12 @@ namespace AWS.Tests.Library
             String tableName = _tableName;
             Int64 readCapacityUnits = _readCapacityUnits;
             Int64 writeCapacityUnits = _writeCapacityUnits;
-            String hashKeyName = _hashKeyName;
+            DynamoDBAttribute hashKey = _hashKeyAttributeNoValue;
+
             try
             {
-                AWS.DynamoDB.DynamoDBClient ddb = new DynamoDB.DynamoDBClient(AWSCredentials.AccessKey, AWSCredentials.SecretAccessKey);
-                ddb.CreateTable(tableName, hashKeyName, Types.Enum.Number, readCapacityUnits, writeCapacityUnits);
+                AWS.DynamoDB.DynamoDBClient ddb = new DynamoDB.DynamoDBClient(TestCredentials.Credentials);
+                ddb.CreateTable(tableName, hashKey, readCapacityUnits, writeCapacityUnits);
                 Thread.Sleep(60000);
             }
             catch (DynamoDBTableException) { }
@@ -97,25 +98,26 @@ namespace AWS.Tests.Library
 		/// <returns><c>true</c>, if passes, <c>false</c> if fails.</returns>
 		public Boolean DeleteTable()
         {
-            AWS.DynamoDB.DynamoDBClient ddb = new DynamoDB.DynamoDBClient(AWSCredentials.AccessKey, AWSCredentials.SecretAccessKey);
+            AWS.DynamoDB.DynamoDBClient ddb = new DynamoDB.DynamoDBClient(TestCredentials.Credentials);
             String tableName = _tableName;
             Int64 readCapacityUnits = _readCapacityUnits;
             Int64 writeCapacityUnits = _writeCapacityUnits;
-            String hashKeyName = _hashKeyName;
+            DynamoDBAttribute hashKey = _hashKeyAttributeNoValue;
+
             try
             {
                 try
                 {
-                    ddb.CreateTable(tableName, hashKeyName, Types.Enum.Number, readCapacityUnits, writeCapacityUnits);
+                    ddb.CreateTable(tableName, hashKey, readCapacityUnits, writeCapacityUnits);
                     Thread.Sleep(60000);
                 }
-                catch (DynamoDBTableException) { }
+                catch (DynamoDBClientException) { }
                 try
                 {
                     ddb.DeleteTable(tableName);
                     Thread.Sleep(60000);
                 }
-                catch (DynamoDBTableException) { }
+                catch (DynamoDBClientException) { }
             }
             catch
             {

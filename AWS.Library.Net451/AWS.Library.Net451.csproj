@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AWSCredentials.cs" />
     <Compile Include="DynamoDB\ComparisonOperator.cs" />
     <Compile Include="DynamoDB\DynamoDBAttribute.cs" />
     <Compile Include="DynamoDB\DynamoDBBatchWrite.cs" />

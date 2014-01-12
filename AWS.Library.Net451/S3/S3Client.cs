@@ -14,26 +14,21 @@ namespace AWS.S3
     {
         #region Fields
         /// <summary>
-        /// Stores the AWS access key
+        /// Stores the AWS Credentials
         /// </summary>
-        private String _accessKey;
-
-        /// <summary>
-        /// Stores the AWS secret access key
-        /// </summary>
-        private String _secretAccessKey;
+        private AWSCredentials _awsCredentials;
         #endregion
 
         #region Constructors
         /// <summary>
         /// Constructs a S3Client
         /// </summary>
-        public S3Client(String accessKey, String secretAccessKey)
+        /// <param name="awsCredentials">AWS Credentials</param>
+        public S3Client(AWSCredentials awsCredentials)
         {
             try
             {
-                _accessKey = accessKey;
-                _secretAccessKey = secretAccessKey;
+                _awsCredentials = awsCredentials;
                 Buckets = new List<S3Bucket>();
             }
             catch (Exception error)
@@ -43,7 +38,6 @@ namespace AWS.S3
         }
         #endregion
 
-        #region Methods
         /// <summary>
         /// Get a bucket
         /// </summary>
@@ -64,7 +58,6 @@ namespace AWS.S3
                 }
             }
         }
-        #endregion
 
         #region Properties
         /// <summary>
@@ -85,7 +78,7 @@ namespace AWS.S3
         {
             try
             {
-                S3Bucket bucket = S3Bucket.CreateBucket(_accessKey, _secretAccessKey, queueName);
+                S3Bucket bucket = S3Bucket.CreateBucket(_awsCredentials, queueName);
                 Buckets.Add(bucket);
                 Buckets = Buckets.OrderBy(x => x.Name).ToList();
                 return bucket;
@@ -104,7 +97,7 @@ namespace AWS.S3
         {
             try
             {
-                S3Bucket.DeleteBucket(_accessKey, _secretAccessKey, bucketName);
+                S3Bucket.DeleteBucket(_awsCredentials, bucketName);
                 Buckets.RemoveAll(x => x.Name == bucketName);
                 Buckets = Buckets.OrderBy(x => x.Name).ToList();
             }
@@ -121,7 +114,7 @@ namespace AWS.S3
         {
             try
             {
-                List<S3Bucket> buckets = S3Bucket.GetListOfBuckets(_accessKey, _secretAccessKey);
+                List<S3Bucket> buckets = S3Bucket.GetListOfBuckets(_awsCredentials);
                 foreach (var bucket in buckets)
                 {
                     if (Buckets.Any(x => x.Name == bucket.Name) == false)
@@ -156,7 +149,7 @@ namespace AWS.S3
         {
             try
             {
-                S3Bucket bucket = await S3Bucket.CreateBucketAsync(_accessKey, _secretAccessKey, bucketName);
+                S3Bucket bucket = await S3Bucket.CreateBucketAsync(_awsCredentials, bucketName);
                 Buckets.Add(bucket);
                 Buckets = Buckets.OrderBy(x => x.Name).ToList();
                 return bucket;
@@ -175,7 +168,7 @@ namespace AWS.S3
         {
             try
             {
-                await S3Bucket.DeleteBucketAsync(_accessKey, _secretAccessKey, bucketName);
+                await S3Bucket.DeleteBucketAsync(_awsCredentials, bucketName);
                 Buckets.RemoveAll(x => x.Name == bucketName);
                 Buckets = Buckets.OrderBy(x => x.Name).ToList();
             }
@@ -192,7 +185,7 @@ namespace AWS.S3
         {
             try
             {
-                List<S3Bucket> buckets = await S3Bucket.GetListOfBucketsAsync(_accessKey, _secretAccessKey);
+                List<S3Bucket> buckets = await S3Bucket.GetListOfBucketsAsync(_awsCredentials);
                 foreach (var bucket in buckets)
                 {
                     if (Buckets.Any(x => x.Name == bucket.Name) == false)

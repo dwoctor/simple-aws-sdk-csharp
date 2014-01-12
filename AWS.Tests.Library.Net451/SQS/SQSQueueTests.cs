@@ -20,18 +20,18 @@ namespace AWS.Tests.Library
 #if NET45
                 var task = Task.Run(async () =>
                 {
-                    await SQSQueue.CreateQueueAsync(AWSCredentials.AccessKey, AWSCredentials.SecretAccessKey, queueName);
+                    await SQSQueue.CreateQueueAsync(TestCredentials.Credentials, queueName);
                 });
                 task.Wait();
 #else
-                SQSQueue.CreateQueue(AWSCredentials.AccessKey, AWSCredentials.SecretAccessKey, queueName);
+                SQSQueue.CreateQueue(TestCredentials.Credentials, queueName);
 #endif
                 Thread.Sleep(1000);
             }
             catch (SQSQueueException) { }
             try
             {
-                SQSQueue queue = new SQSQueue(AWSCredentials.AccessKey, AWSCredentials.SecretAccessKey, queueName);
+                SQSQueue queue = new SQSQueue(TestCredentials.Credentials, queueName);
             }
             catch
             {
@@ -42,11 +42,11 @@ namespace AWS.Tests.Library
 #if NET45
                 var task = Task.Run(async () =>
                 {
-                    await SQSQueue.DeleteQueueAsync(AWSCredentials.AccessKey, AWSCredentials.SecretAccessKey, queueName);
+                    await SQSQueue.DeleteQueueAsync(TestCredentials.Credentials, queueName);
                 });
                 task.Wait();
 #else
-                SQSQueue.DeleteQueue(AWSCredentials.AccessKey, AWSCredentials.SecretAccessKey, queueName);
+                SQSQueue.DeleteQueue(TestCredentials.Credentials, queueName);
 #endif
                 Thread.Sleep(1000);
             }

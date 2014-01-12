@@ -101,6 +101,9 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\AWS.Library.Net451\AWSCredentials.cs">
+      <Link>AWSCredentials.cs</Link>
+    </Compile>
     <Compile Include="..\AWS.Library.Net451\DynamoDB\ComparisonOperator.cs">
       <Link>DynamoDB\ComparisonOperator.cs</Link>
     </Compile>

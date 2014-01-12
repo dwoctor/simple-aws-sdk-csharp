@@ -14,26 +14,21 @@ namespace AWS.DynamoDB
     {
         #region Fields
         /// <summary>
-        /// Stores the AWS access key
+        /// Stores the AWS Credentials
         /// </summary>
-        private String _accessKey;
-
-        /// <summary>
-        /// Stores the AWS secret access key
-        /// </summary>
-        private String _secretAccessKey;
+        private AWSCredentials _awsCredentials;
         #endregion
 
         #region Constructors
         /// <summary>
         /// Constructs a DynamoDBClient
         /// </summary>
-        public DynamoDBClient(String accessKey, String secretAccessKey)
+        /// <param name="awsCredentials">AWS Credentials</param>
+        public DynamoDBClient(AWSCredentials awsCredentials)
         {
 			try
 			{
-	            _accessKey = accessKey;
-	            _secretAccessKey = secretAccessKey;
+                _awsCredentials = awsCredentials;
 	            Tables = new List<DynamoDBTable>();
 #if NET45
 				var task = Task.Run(async () =>
@@ -80,15 +75,14 @@ namespace AWS.DynamoDB
         /// Creates a table associated with an AWS account
         /// </summary>
         /// <param name="tableName">The name of the table to create</param>
-        /// <param name="hashKeyAttributeName">The name of the hash key</param>
-        /// <param name="hashKeyAttributeType">The type of the hash key</param>
+        /// <param name="attribute">hash key</param>
         /// <param name="readCapacityUnits">The number read capacity units provisioned for the database</param>
         /// <param name="writeCapacityUnits">The number write capacity units provisioned for the database</param>
-        public DynamoDBTable CreateTable(String tableName, String hashKeyAttributeName, Types.Enum hashKeyAttributeType, Int64 readCapacityUnits, Int64 writeCapacityUnits)
+        public DynamoDBTable CreateTable(String tableName, DynamoDBAttribute attribute, Int64 readCapacityUnits, Int64 writeCapacityUnits)
         {
 			try
 			{
-	            DynamoDBTable table = DynamoDBTable.CreateTable(_accessKey, _secretAccessKey, tableName, hashKeyAttributeName, hashKeyAttributeType, readCapacityUnits, writeCapacityUnits);
+                DynamoDBTable table = DynamoDBTable.CreateTable(_awsCredentials, tableName, attribute, readCapacityUnits, writeCapacityUnits);
 	            Tables.Add(table);
 	            Tables = Tables.OrderBy(x => x.Name).ToList();
 	            return table;
@@ -107,7 +101,7 @@ namespace AWS.DynamoDB
         {
 			try
 			{
-	            DynamoDBTable.DeleteTable(_accessKey, _secretAccessKey, tableName);
+                DynamoDBTable.DeleteTable(_awsCredentials, tableName);
 	            Tables.RemoveAll(x => x.Name == tableName);
 	            Tables = Tables.OrderBy(x => x.Name).ToList();
 			}
@@ -124,7 +118,7 @@ namespace AWS.DynamoDB
         {
 			try
 			{
-	            List<DynamoDBTable> tables = DynamoDBTable.GetListOfTables(_accessKey, _secretAccessKey);
+                List<DynamoDBTable> tables = DynamoDBTable.GetListOfTables(_awsCredentials);
 	            foreach (var table in tables)
 	            {
 	                if (Tables.Any(x => x.Name == table.Name) == false)
@@ -155,15 +149,14 @@ namespace AWS.DynamoDB
         /// Creates a table associated with an AWS account
         /// </summary>
         /// <param name="tableName">The name of the table to create</param>
-        /// <param name="hashKeyAttributeName">The name of the hash key</param>
-        /// <param name="hashKeyAttributeType">The type of the hash key</param>
+        /// <param name="attribute">hash key</param>
         /// <param name="readCapacityUnits">The number read capacity units provisioned for the database</param>
         /// <param name="writeCapacityUnits">The number write capacity units provisioned for the database</param>
-        public async Task<DynamoDBTable> CreateTableAsync(String tableName, String hashKeyAttributeName, Types.Enum hashKeyAttributeType, Int64 readCapacityUnits, Int64 writeCapacityUnits)
+        public async Task<DynamoDBTable> CreateTableAsync(String tableName, DynamoDBAttribute attribute, Int64 readCapacityUnits, Int64 writeCapacityUnits)
         {
 			try
 			{
-	            DynamoDBTable table = await DynamoDBTable.CreateTableAsync(_accessKey, _secretAccessKey, tableName, hashKeyAttributeName, hashKeyAttributeType, readCapacityUnits, writeCapacityUnits);
+                DynamoDBTable table = await DynamoDBTable.CreateTableAsync(_awsCredentials, tableName, attribute, readCapacityUnits, writeCapacityUnits);
 	            Tables.Add(table);
 	            Tables = Tables.OrderBy(x => x.Name).ToList();
 	            return table;
@@ -182,7 +175,7 @@ namespace AWS.DynamoDB
         {
 			try
 			{
-	            DynamoDBTable.DeleteTableAsync(_accessKey, _secretAccessKey, tableName);
+                DynamoDBTable.DeleteTableAsync(_awsCredentials, tableName);
 	            Tables.RemoveAll(x => x.Name == tableName);
 	            Tables = Tables.OrderBy(x => x.Name).ToList();
 			}
@@ -199,7 +192,7 @@ namespace AWS.DynamoDB
         {
 			try
 			{
-	            List<DynamoDBTable> tables = await DynamoDBTable.GetListOfTablesAsync(_accessKey, _secretAccessKey);
+                List<DynamoDBTable> tables = await DynamoDBTable.GetListOfTablesAsync(_awsCredentials);
 	            foreach (var table in tables)
 	            {
 	                if (Tables.Any(x => x.Name == table.Name) == false)

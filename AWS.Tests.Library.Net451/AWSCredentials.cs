@@ -1,22 +1,12 @@
-﻿using System;
+﻿using AWS;
+using System;
 
 namespace AWS.Tests.Library
 {
-    /// <summary>
-    /// Stores the AWS Credentials
-    /// </summary>
-    class AWSCredentials
+    public class TestCredentials
     {
-        #region Fields
-        /// <summary>
-        /// Stores the AWS access key
-        /// </summary>
-		public static String AccessKey = "<Insert AWS Access Key Here>";
-
-        /// <summary>
-        /// Stores the AWS secret access key
-        /// </summary>
-		public static String SecretAccessKey = "<Insert AWS Secret Access Key Here>";
-        #endregion
+        public static AWSCredentials Credentials = new AWSCredentials("<Insert AWS Access Key Here>",
+                                                                       "<Insert AWS Secret Access Key Here>",
+                                       /*Select your AWS Region Here*/ AWSCredentials.Regions.USEast1);
     }
 }

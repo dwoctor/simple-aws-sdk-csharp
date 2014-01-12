@@ -61,6 +61,28 @@ namespace AWS.DynamoDB
         public DynamoDBAttribute() { }
 
         /// <summary>
+        /// Constructs a DynamoDBAttribute (Only for use with CreateTable methods)
+        /// </summary>
+        /// <param name="name">The attribute's name to add to the item</param>
+        /// <param name="Type">The attribute's Type</param>
+        /// <param name="isHashKey">Is the Attribute a Hash Key</param>
+        /// <param name="isRangeKey">Is the Attribute a Range Key</param>
+        public DynamoDBAttribute(String name, Types.Enum type, Boolean isHashKey = false, Boolean isRangeKey = false)
+        {
+            try
+            {
+                Name = name;
+                Type = type;
+                IsHashKey = isHashKey;
+                IsRangeKey = isRangeKey;
+            }
+            catch (Exception error)
+            {
+                throw DynamoDBAttributeException.Generator(error);
+            }
+        }
+
+        /// <summary>
 		/// Constructs a DynamoDBAttribute
         /// </summary>
         /// <param name="name">The attribute's name to add to the item</param>
@@ -127,6 +149,7 @@ namespace AWS.DynamoDB
 				try
 				{
                 	_name = value;
+                    Updated();
 				}
 				catch(Exception error)
 				{
@@ -277,6 +300,7 @@ namespace AWS.DynamoDB
 	                    default:
 							throw DynamoDBAttributeException.Generator(DynamoDBAttributeException.Phases.UnsupportedType);
 	                }
+                    Updated();
 				}
 				catch(Exception error)
 				{
@@ -300,6 +324,11 @@ namespace AWS.DynamoDB
 				{
 					throw DynamoDBAttributeException.Generator(error);
 				}
+            }
+            private set
+            {
+                _attributeType = value;
+                Updated();
             }
         }
 
@@ -353,6 +382,7 @@ namespace AWS.DynamoDB
 	                {
 	                    _isRangeKey = !_isHashKey;
 	                }
+                    Updated();
 				}
 				catch(Exception error)
 				{
@@ -386,6 +416,7 @@ namespace AWS.DynamoDB
 	                {
 	                    _isHashKey = !_isRangeKey;
 	                }
+                    Updated();
 				}
 				catch(Exception error)
 				{
@@ -393,9 +424,43 @@ namespace AWS.DynamoDB
 				}
             }
         }
+
+        /// <summary>
+        /// Gets the attribute's a KeySchemaElement
+        /// </summary>
+        public KeySchemaElement KeySchemaElement
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Gets the attribute's a AttributeDefinition
+        /// </summary>
+        public AttributeDefinition AttributeDefinition
+        {
+            get;
+            private set;
+        }
         #endregion
 
         #region Methods
+        /// <summary>
+        /// When data has changed run this method
+        /// </summary>
+        private void Updated()
+        {
+            this.AttributeDefinition = new Amazon.DynamoDBv2.Model.AttributeDefinition() { AttributeName = this._name, AttributeType = Types.ScalarAttributeType[this.Type] };
+            if (this.IsHashKey)
+            {
+                this.KeySchemaElement = new KeySchemaElement() { AttributeName = this.Name, KeyType = new Amazon.DynamoDBv2.KeyType("HASH") };
+            }
+            else
+            {
+                this.KeySchemaElement = new KeySchemaElement() { AttributeName = this.Name, KeyType = new Amazon.DynamoDBv2.KeyType("RANGE") };
+            }
+        }
+
         /// <summary>
         /// Converts the attribute to an AttributeValue object
         /// </summary>

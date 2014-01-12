@@ -21,16 +21,16 @@ namespace AWS.Tests.Library
 			String tableName = _tableName;
 			Int64 readCapacityUnits = _readCapacityUnits;
 			Int64 writeCapacityUnits = _writeCapacityUnits;
-			String hashKeyName = _hashKeyName;
+            DynamoDBAttribute hashKey = _hashKeyAttributeNoValue;
 			try
 			{
-				DynamoDBTable.CreateTable(AWSCredentials.AccessKey, AWSCredentials.SecretAccessKey, tableName, hashKeyName, Types.Enum.Number, readCapacityUnits, writeCapacityUnits);
+                DynamoDBTable.CreateTable(TestCredentials.Credentials, tableName, hashKey, readCapacityUnits, writeCapacityUnits);
 				Thread.Sleep(60000);
 			}
 			catch (DynamoDBTableException) { }
 			try
 			{
-				DynamoDBTableCache ddbt = new DynamoDBTableCache(AWSCredentials.AccessKey, AWSCredentials.SecretAccessKey, tableName);
+				DynamoDBTableCache ddbt = new DynamoDBTableCache(TestCredentials.Credentials, tableName);
 			}
 			catch
 			{
@@ -38,7 +38,7 @@ namespace AWS.Tests.Library
 			}
 			try
 			{
-				DynamoDBTable.DeleteTable(AWSCredentials.AccessKey, AWSCredentials.SecretAccessKey, tableName);
+				DynamoDBTable.DeleteTable(TestCredentials.Credentials, tableName);
 				Thread.Sleep(60000);
 			}
 			catch (DynamoDBTableException) { }
@@ -54,17 +54,17 @@ namespace AWS.Tests.Library
 			String tableName = _tableName;
 			Int64 readCapacityUnits = _readCapacityUnits;
 			Int64 writeCapacityUnits = _writeCapacityUnits;
-			String hashKeyName = _hashKeyName;
-			DynamoDBItem item = _item;
+            DynamoDBAttribute hashKey = _hashKeyAttributeNoValue;
+            DynamoDBItem item = _item;
 			try
 			{
-				DynamoDBTable.CreateTable(AWSCredentials.AccessKey, AWSCredentials.SecretAccessKey, tableName, hashKeyName, Types.Enum.Number, readCapacityUnits, writeCapacityUnits);
+                DynamoDBTable.CreateTable(TestCredentials.Credentials, tableName, hashKey, readCapacityUnits, writeCapacityUnits);
 				Thread.Sleep(60000);
 			}
 			catch (DynamoDBTableException) { }
 			try
 			{
-				DynamoDBTableCache ddbtc = new DynamoDBTableCache(AWSCredentials.AccessKey, AWSCredentials.SecretAccessKey, tableName);
+				DynamoDBTableCache ddbtc = new DynamoDBTableCache(TestCredentials.Credentials, tableName);
 				ddbtc.PutItem(item);
 			}
 			catch
@@ -73,7 +73,7 @@ namespace AWS.Tests.Library
 			}
 			try
 			{
-				DynamoDBTable.DeleteTable(AWSCredentials.AccessKey, AWSCredentials.SecretAccessKey, tableName);
+				DynamoDBTable.DeleteTable(TestCredentials.Credentials, tableName);
 				Thread.Sleep(60000);
 			}
 			catch (DynamoDBTableException) { }
@@ -89,8 +89,7 @@ namespace AWS.Tests.Library
 			String tableName = _tableName;
 			Int64 readCapacityUnits = _readCapacityUnits;
 			Int64 writeCapacityUnits = _writeCapacityUnits;
-			String hashKeyName = _hashKeyName;
-			Int32 hashKeyValue = _hashKeyValue;
+            DynamoDBAttribute hashKey = _hashKeyAttribute;
 			String stringAttributeKey = _stringAttributeKey;
 			String numberAttributeKey = _numberAttributeKey;
 			String binaryAttributeKey = _binaryAttributeKey;
@@ -100,16 +99,16 @@ namespace AWS.Tests.Library
 			DynamoDBItem item = _item;
 			try
 			{
-				DynamoDBTable.CreateTable(AWSCredentials.AccessKey, AWSCredentials.SecretAccessKey, tableName, hashKeyName, Types.Enum.Number, readCapacityUnits, writeCapacityUnits);
+                DynamoDBTable.CreateTable(TestCredentials.Credentials, tableName, hashKey, readCapacityUnits, writeCapacityUnits);
 				Thread.Sleep(60000);
 			}
 			catch (DynamoDBTableException) { }
 			try
 			{
-				DynamoDBTableCache ddbtc = new DynamoDBTableCache(AWSCredentials.AccessKey, AWSCredentials.SecretAccessKey, tableName);
+				DynamoDBTableCache ddbtc = new DynamoDBTableCache(TestCredentials.Credentials, tableName);
 				ddbtc.PutItem(item);
 				DynamoDBItem gotItem1 = ddbtc.GetItem(item); // Returns all attributes
-				if (gotItem1.ContainsAttribute(hashKeyName) == false && Convert.ToInt32(gotItem1[hashKeyName].Value) != hashKeyValue && gotItem1.ContainsAttribute(stringAttributeKey) == false && gotItem1[stringAttributeKey].Value as String != stringAttributeValue && gotItem1.ContainsAttribute(numberAttributeKey) == false && Convert.ToInt32(gotItem1[numberAttributeKey].Value) != numberAttributeValue && gotItem1[binaryAttributeKey].Value as Byte[] != binaryAttributeValue && gotItem1.Count != 4)
+                if (gotItem1.ContainsAttribute(hashKey.Name) == false && Convert.ToInt32(gotItem1[hashKey.Name].Value) != Convert.ToInt32(hashKey.Value) && gotItem1.ContainsAttribute(stringAttributeKey) == false && gotItem1[stringAttributeKey].Value as String != stringAttributeValue && gotItem1.ContainsAttribute(numberAttributeKey) == false && Convert.ToInt32(gotItem1[numberAttributeKey].Value) != numberAttributeValue && gotItem1[binaryAttributeKey].Value as Byte[] != binaryAttributeValue && gotItem1.Count != 4)
 				{
 					return false;
 				}
@@ -120,7 +119,7 @@ namespace AWS.Tests.Library
 			}
 			try
 			{
-				DynamoDBTable.DeleteTable(AWSCredentials.AccessKey, AWSCredentials.SecretAccessKey, tableName);
+				DynamoDBTable.DeleteTable(TestCredentials.Credentials, tableName);
 				Thread.Sleep(60000);
 			}
 			catch (DynamoDBTableException) { }

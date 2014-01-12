@@ -48,11 +48,12 @@ namespace AWS.DynamoDB
         /// <summary>
         /// Constructs a DynamoDBTable
         /// </summary>
-        public DynamoDBTable(String accessKey, String secretAccessKey, String tableName)
+        /// <param name="awsCredentials">AWS Credentials</param>
+        public DynamoDBTable(AWSCredentials awsCredentials, String tableName)
         {
 			try
 			{
-				_ddb = new AmazonDynamoDBClient(accessKey, secretAccessKey);
+                _ddb = new AmazonDynamoDBClient(awsCredentials.AccessKey, awsCredentials.SecretAccessKey, awsCredentials.Region);
 				_tableName = tableName;
 				_writeBatch = new DynamoDBBatchWrite(_tableName);
 			}
@@ -127,26 +128,24 @@ namespace AWS.DynamoDB
         /// <summary>
         /// Creates a table associated with an AWS account
         /// </summary>
-        /// <param name="accessKey">The Access Key of the AWS account</param>
-        /// <param name="secretAccessKey">The Secret Access Key of the AWS account</param>
+        /// <param name="awsCredentials">AWS Credentials</param>
         /// <param name="tableName">The name of the table to create</param>
-        /// <param name="hashKeyAttributeName">The name of the hash key</param>
-        /// <param name="hashKeyAttributeType">The type of the hash key</param>
+        /// <param name="attribute">hash key</param>
         /// <param name="readCapacityUnits">The number read capacity units provisioned for the database</param>
         /// <param name="writeCapacityUnits">The number write capacity units provisioned for the database</param>
-        public static DynamoDBTable CreateTable(String accessKey, String secretAccessKey, String tableName, String hashKeyAttributeName, Types.Enum hashKeyAttributeType, Int64 readCapacityUnits, Int64 writeCapacityUnits)
+        public static DynamoDBTable CreateTable(AWSCredentials awsCredentials, String tableName, DynamoDBAttribute attribute, Int64 readCapacityUnits, Int64 writeCapacityUnits)
         {
 			try
 			{
-				if (GetDictionaryOfTables(accessKey, secretAccessKey).ContainsKey(tableName) == false)
+                if (GetDictionaryOfTables(awsCredentials).ContainsKey(tableName) == false)
 				{
-					AmazonDynamoDBClient ddb = new AmazonDynamoDBClient(accessKey, secretAccessKey);
-					KeySchemaElement keySchemaElement = new KeySchemaElement() { AttributeName = hashKeyAttributeName, KeyType = Types.KeyType[hashKeyAttributeType] };
-					List<KeySchemaElement> keySchema = new List<KeySchemaElement>() { keySchemaElement };
+                    AmazonDynamoDBClient ddb = new AmazonDynamoDBClient(awsCredentials.AccessKey, awsCredentials.SecretAccessKey, awsCredentials.Region);
+					List<KeySchemaElement> keySchema = new List<KeySchemaElement>() { attribute.KeySchemaElement };
 					ProvisionedThroughput provisionedThroughput = new ProvisionedThroughput() { ReadCapacityUnits = readCapacityUnits, WriteCapacityUnits = writeCapacityUnits };
-					CreateTableRequest createTableRequest = new CreateTableRequest() { TableName = tableName, KeySchema = keySchema, ProvisionedThroughput = provisionedThroughput };
+                    List<AttributeDefinition> attributeDefinitions = new List<AttributeDefinition>() { attribute.AttributeDefinition };
+                    CreateTableRequest createTableRequest = new CreateTableRequest() { TableName = tableName, KeySchema = keySchema, ProvisionedThroughput = provisionedThroughput, AttributeDefinitions = attributeDefinitions };
 					CreateTableResponse createTableResponse = ddb.CreateTable(createTableRequest);
-					return new DynamoDBTable(accessKey, secretAccessKey, tableName);
+                    return new DynamoDBTable(awsCredentials, tableName);
 				}
 				else
 				{
@@ -162,16 +161,15 @@ namespace AWS.DynamoDB
         /// <summary>
         /// Delete a table associated with an AWS account
         /// </summary>
-        /// <param name="accessKey">The Access Key of the AWS account</param>
-        /// <param name="secretAccessKey">The Secret Access Key of the AWS account</param>
+        /// <param name="awsCredentials">AWS Credentials</param>
         /// <param name="tableName">The name of the table to delete</param>
-        public static void DeleteTable(String accessKey, String secretAccessKey, String tableName)
+        public static void DeleteTable(AWSCredentials awsCredentials, String tableName)
         {
 			try
 			{
-	            if (GetDictionaryOfTables(accessKey, secretAccessKey).ContainsKey(tableName))
+                if (GetDictionaryOfTables(awsCredentials).ContainsKey(tableName))
 	            {
-					AmazonDynamoDBClient ddb = new AmazonDynamoDBClient(accessKey, secretAccessKey);
+                    AmazonDynamoDBClient ddb = new AmazonDynamoDBClient(awsCredentials.AccessKey, awsCredentials.SecretAccessKey, awsCredentials.Region);
 					DeleteTableRequest deleteTableRequest = new DeleteTableRequest() { TableName = tableName };
 					DeleteTableResponse deleteTableResponse = ddb.DeleteTable(deleteTableRequest);
 	            }
@@ -189,19 +187,19 @@ namespace AWS.DynamoDB
         /// <summary>
         /// Gets a list of tables associated with an AWS account
         /// </summary>
-        /// <param name="accessKey">The Access Key of the AWS account</param>
+        /// <param name="awsCredentials">AWS Credentials</param>
         /// <param name="secretAccessKey">The Secret Access Key of the AWS account</param>
-        public static List<DynamoDBTable> GetListOfTables(String accessKey, String secretAccessKey)
+        public static List<DynamoDBTable> GetListOfTables(AWSCredentials awsCredentials)
         {
 			try
 			{
 	            List<DynamoDBTable> tables = new List<DynamoDBTable>();
-	            AmazonDynamoDBClient ddb = new AmazonDynamoDBClient(accessKey, secretAccessKey);
+                AmazonDynamoDBClient ddb = new AmazonDynamoDBClient(awsCredentials.AccessKey, awsCredentials.SecretAccessKey, awsCredentials.Region);
 	            ListTablesRequest listTablesRequest = new ListTablesRequest();
 	            ListTablesResponse listTablesResponse = ddb.ListTables(listTablesRequest);
-	            foreach (var item in listTablesResponse.TableNames)
+	            foreach (var tableName in listTablesResponse.TableNames)
 	            {
-	                tables.Add(new DynamoDBTable(accessKey, secretAccessKey, item));
+                    tables.Add(new DynamoDBTable(awsCredentials, tableName));
 	            }
 	            return tables;
 			}
@@ -214,19 +212,18 @@ namespace AWS.DynamoDB
         /// <summary>
         /// Gets a dictionary of tables associated with an AWS account
         /// </summary>
-        /// <param name="accessKey">The Access Key of the AWS account</param>
-        /// <param name="secretAccessKey">The Secret Access Key of the AWS account</param>
-        public static Dictionary<String, DynamoDBTable> GetDictionaryOfTables(String accessKey, String secretAccessKey)
+        /// <param name="awsCredentials">AWS Credentials</param>
+        public static Dictionary<String, DynamoDBTable> GetDictionaryOfTables(AWSCredentials awsCredentials)
         {
 			try
 			{
 	            Dictionary<String, DynamoDBTable> tables = new Dictionary<String, DynamoDBTable>();
-	            AmazonDynamoDBClient ddb = new AmazonDynamoDBClient(accessKey, secretAccessKey);
+                AmazonDynamoDBClient ddb = new AmazonDynamoDBClient(awsCredentials.AccessKey, awsCredentials.SecretAccessKey, awsCredentials.Region);
 	            ListTablesRequest listTablesRequest = new ListTablesRequest();
 	            ListTablesResponse listTablesResponse = ddb.ListTables(listTablesRequest);
-	            foreach (var item in listTablesResponse.TableNames)
+                foreach (var tableName in listTablesResponse.TableNames)
 	            {
-	                tables.Add(item, new DynamoDBTable(accessKey, secretAccessKey, item));
+                    tables.Add(tableName, new DynamoDBTable(awsCredentials, tableName));
 	            }
 	            return tables;
 			}
@@ -969,27 +966,25 @@ namespace AWS.DynamoDB
         /// <summary>
         /// Creates a table associated with an AWS account
         /// </summary>
-        /// <param name="accessKey">The Access Key of the AWS account</param>
-        /// <param name="secretAccessKey">The Secret Access Key of the AWS account</param>
+        /// <param name="awsCredentials">AWS Credentials</param>
         /// <param name="tableName">The name of the table to create</param>
-        /// <param name="hashKeyAttributeName">The name of the hash key</param>
-        /// <param name="hashKeyAttributeType">The type of the hash key</param>
+        /// <param name="attribute">hash key</param>
         /// <param name="readCapacityUnits">The number read capacity units provisioned for the database</param>
         /// <param name="writeCapacityUnits">The number write capacity units provisioned for the database</param>
-        public static async Task<DynamoDBTable> CreateTableAsync(String accessKey, String secretAccessKey, String tableName, String hashKeyAttributeName, Types.Enum hashKeyAttributeType, Int64 readCapacityUnits, Int64 writeCapacityUnits)
+        public static async Task<DynamoDBTable> CreateTableAsync(AWSCredentials awsCredentials, String tableName, DynamoDBAttribute attribute, Int64 readCapacityUnits, Int64 writeCapacityUnits)
         {
 			try
 			{
-	            Dictionary<String, DynamoDBTable> tables = await GetDictionaryOfTablesAsync(accessKey, secretAccessKey);
+                Dictionary<String, DynamoDBTable> tables = await GetDictionaryOfTablesAsync(awsCredentials);
 	            if (tables.ContainsKey(tableName) == false)
 	            {
-					AmazonDynamoDBClient ddb = new AmazonDynamoDBClient(accessKey, secretAccessKey);
-					KeySchemaElement keySchemaElement = new KeySchemaElement() { AttributeName = hashKeyAttributeName, KeyType = Types.KeyType[hashKeyAttributeType] };
-					List<KeySchemaElement> keySchema = new List<KeySchemaElement>() { keySchemaElement };
-					ProvisionedThroughput provisionedThroughput = new ProvisionedThroughput() { ReadCapacityUnits = readCapacityUnits, WriteCapacityUnits = writeCapacityUnits };
-					CreateTableRequest createTableRequest = new CreateTableRequest() { TableName = tableName, KeySchema = keySchema, ProvisionedThroughput = provisionedThroughput };
-					CreateTableResponse createTableResponse = await ddb.CreateTableAsync(createTableRequest);
-					return new DynamoDBTable(accessKey, secretAccessKey, tableName);
+                    AmazonDynamoDBClient ddb = new AmazonDynamoDBClient(awsCredentials.AccessKey, awsCredentials.SecretAccessKey, awsCredentials.Region);
+                    List<KeySchemaElement> keySchema = new List<KeySchemaElement>() { attribute.KeySchemaElement };
+                    ProvisionedThroughput provisionedThroughput = new ProvisionedThroughput() { ReadCapacityUnits = readCapacityUnits, WriteCapacityUnits = writeCapacityUnits };
+                    List<AttributeDefinition> attributeDefinitions = new List<AttributeDefinition>() { attribute.AttributeDefinition };
+                    CreateTableRequest createTableRequest = new CreateTableRequest() { TableName = tableName, KeySchema = keySchema, ProvisionedThroughput = provisionedThroughput, AttributeDefinitions = attributeDefinitions };
+                    CreateTableResponse createTableResponse = await ddb.CreateTableAsync(createTableRequest);
+                    return new DynamoDBTable(awsCredentials, tableName);
 	            }
 				else
 				{
@@ -1005,17 +1000,16 @@ namespace AWS.DynamoDB
         /// <summary>
         /// Delete a table associated with an AWS account
         /// </summary>
-        /// <param name="accessKey">The Access Key of the AWS account</param>
-        /// <param name="secretAccessKey">The Secret Access Key of the AWS account</param>
+        /// <param name="awsCredentials">AWS Credentials</param>
         /// <param name="tableName">The name of the table to delete</param>
-        public static async void DeleteTableAsync(String accessKey, String secretAccessKey, String tableName)
+        public static async void DeleteTableAsync(AWSCredentials awsCredentials, String tableName)
         {
 			try
 			{
-	            Dictionary<String, DynamoDBTable> tables = await GetDictionaryOfTablesAsync(accessKey, secretAccessKey);
+	            Dictionary<String, DynamoDBTable> tables = await GetDictionaryOfTablesAsync(awsCredentials);
 				if (tables.ContainsKey(tableName) == true)
 				{
-					AmazonDynamoDBClient ddb = new AmazonDynamoDBClient(accessKey, secretAccessKey);
+                    AmazonDynamoDBClient ddb = new AmazonDynamoDBClient(awsCredentials.AccessKey, awsCredentials.SecretAccessKey, awsCredentials.Region);
 					DeleteTableRequest deleteTableRequest = new DeleteTableRequest() { TableName = tableName };
 					DeleteTableResponse deleteTableResponse = await ddb.DeleteTableAsync(deleteTableRequest);
 				}
@@ -1033,19 +1027,18 @@ namespace AWS.DynamoDB
         /// <summary>
         /// Gets a list of tables associated with an AWS account
         /// </summary>
-        /// <param name="accessKey">The Access Key of the AWS account</param>
-        /// <param name="secretAccessKey">The Secret Access Key of the AWS account</param>
-        public static async Task<List<DynamoDBTable>> GetListOfTablesAsync(String accessKey, String secretAccessKey)
+        /// <param name="awsCredentials">AWS Credentials</param>
+        public static async Task<List<DynamoDBTable>> GetListOfTablesAsync(AWSCredentials awsCredentials)
 		{
 			try
 			{
 				List<DynamoDBTable> tables = new List<DynamoDBTable> ();
-				AmazonDynamoDBClient ddb = new AmazonDynamoDBClient(accessKey, secretAccessKey);
+                AmazonDynamoDBClient ddb = new AmazonDynamoDBClient(awsCredentials.AccessKey, awsCredentials.SecretAccessKey, awsCredentials.Region);
 				ListTablesRequest listTablesRequest = new ListTablesRequest ();
 				ListTablesResponse listTablesResponse = await ddb.ListTablesAsync (listTablesRequest);
 				foreach (var item in listTablesResponse.TableNames)
                 {
-					tables.Add (new DynamoDBTable (accessKey, secretAccessKey, item));
+                    tables.Add(new DynamoDBTable(awsCredentials, item));
 				}
 				return tables;
 			}
@@ -1058,19 +1051,19 @@ namespace AWS.DynamoDB
         /// <summary>
         /// Gets a dictionary of tables associated with an AWS account
         /// </summary>
-        /// <param name="accessKey">The Access Key of the AWS account</param>
+        /// <param name="awsCredentials">AWS Credentials</param>
         /// <param name="secretAccessKey">The Secret Access Key of the AWS account</param>
-        public static async Task<Dictionary<String, DynamoDBTable>> GetDictionaryOfTablesAsync(String accessKey, String secretAccessKey)
+        public static async Task<Dictionary<String, DynamoDBTable>> GetDictionaryOfTablesAsync(AWSCredentials awsCredentials)
         {
 			try
 			{
 	            Dictionary<String, DynamoDBTable> tables = new Dictionary<String, DynamoDBTable>();
-	            AmazonDynamoDBClient ddb = new AmazonDynamoDBClient(accessKey, secretAccessKey);
+                AmazonDynamoDBClient ddb = new AmazonDynamoDBClient(awsCredentials.AccessKey, awsCredentials.SecretAccessKey, awsCredentials.Region);
 	            ListTablesRequest listTablesRequest = new ListTablesRequest();
 	            ListTablesResponse listTablesResponse = await ddb.ListTablesAsync(listTablesRequest);
 	            foreach (var item in listTablesResponse.TableNames)
 	            {
-	                tables.Add(item, new DynamoDBTable(accessKey, secretAccessKey, item));
+                    tables.Add(item, new DynamoDBTable(awsCredentials, item));
 	            }
 	            return tables;
 			}

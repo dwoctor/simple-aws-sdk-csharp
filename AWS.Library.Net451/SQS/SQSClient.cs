@@ -14,26 +14,21 @@ namespace AWS.SQS
     {
         #region Fields
         /// <summary>
-        /// Stores the AWS access key
+        /// Stores the AWS Credentials
         /// </summary>
-        private String _accessKey;
-
-        /// <summary>
-        /// Stores the AWS secret access key
-        /// </summary>
-        private String _secretAccessKey;
+        private AWSCredentials _awsCredentials;
         #endregion
 
         #region Constructors
         /// <summary>
         /// Constructs a SQSClient
         /// </summary>
-        public SQSClient(String accessKey, String secretAccessKey)
+        /// <param name="awsCredentials">AWS Credentials</param>
+        public SQSClient(AWSCredentials awsCredentials)
         {
             try
             {
-                this._accessKey = accessKey;
-                this._secretAccessKey = secretAccessKey;
+                this._awsCredentials = awsCredentials;
                 this.Queues = new List<SQSQueue>();
             }
             catch (Exception error)
@@ -82,7 +77,7 @@ namespace AWS.SQS
         {
             try
             {
-                SQSQueue queue = SQSQueue.CreateQueue(this._accessKey, this._secretAccessKey, queueName);
+                SQSQueue queue = SQSQueue.CreateQueue(this._awsCredentials, queueName);
                 this.Queues.Add(queue);
                 this.Queues = this.Queues.OrderBy(x => x.Name).ToList();
                 return queue;
@@ -101,7 +96,7 @@ namespace AWS.SQS
         {
             try
             {
-                SQSQueue.DeleteQueue(this._accessKey, this._secretAccessKey, queueName);
+                SQSQueue.DeleteQueue(this._awsCredentials, queueName);
                 this.Queues.RemoveAll(x => x.Name == queueName);
                 this.Queues = this.Queues.OrderBy(x => x.Name).ToList();
             }
@@ -118,7 +113,7 @@ namespace AWS.SQS
         {
             try
             {
-                List<SQSQueue> queues = SQSQueue.GetListOfQueues(this._accessKey, this._secretAccessKey);
+                List<SQSQueue> queues = SQSQueue.GetListOfQueues(this._awsCredentials);
                 foreach (var queue in queues)
                 {
                     if (this.Queues.Any(x => x.Name == queue.Name) == false)
@@ -153,7 +148,7 @@ namespace AWS.SQS
         {
             try
             {
-                SQSQueue queue = await SQSQueue.CreateQueueAsync(this._accessKey, this._secretAccessKey, queueName);
+                SQSQueue queue = await SQSQueue.CreateQueueAsync(this._awsCredentials, queueName);
                 this.Queues.Add(queue);
                 this.Queues = this.Queues.OrderBy(x => x.Name).ToList();
                 return queue;
@@ -172,7 +167,7 @@ namespace AWS.SQS
         {
             try
             {
-                await SQSQueue.DeleteQueueAsync(this._accessKey, this._secretAccessKey, queueName);
+                await SQSQueue.DeleteQueueAsync(this._awsCredentials, queueName);
                 this.Queues.RemoveAll(x => x.Name == queueName);
                 this.Queues = this.Queues.OrderBy(x => x.Name).ToList();
             }
@@ -189,7 +184,7 @@ namespace AWS.SQS
         {
             try
             {
-                List<SQSQueue> queues = await SQSQueue.GetListOfQueuesAsync(this._accessKey, this._secretAccessKey);
+                List<SQSQueue> queues = await SQSQueue.GetListOfQueuesAsync(this._awsCredentials);
                 foreach (var queue in queues)
                 {
                     if (this.Queues.Any(x => x.Name == queue.Name) == false)

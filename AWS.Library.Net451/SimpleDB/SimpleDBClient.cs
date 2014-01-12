@@ -13,26 +13,21 @@ namespace AWS.SimpleDB
     {
         #region Fields
         /// <summary>
-        /// Stores the AWS access key
+        /// Stores the AWS Credentials
         /// </summary>
-		private String _accessKey;
-
-        /// <summary>
-        /// Stores the AWS secret access key
-        /// </summary>
-		private String _secretAccessKey;
+        private AWSCredentials _awsCredentials;
         #endregion
 
         #region Constructors
         /// <summary>
         /// Constructs a SimpleDBClient
 		/// </summary>
-		public SimpleDBClient(String accessKey, String secretAccessKey)
+        /// <param name="awsCredentials">AWS Credentials</param>
+        public SimpleDBClient(AWSCredentials awsCredentials)
 		{
             try
             {
-			    _accessKey = accessKey;
-			    _secretAccessKey = secretAccessKey;
+                _awsCredentials = awsCredentials;
                 Domains = new List<SimpleDBDomain>();
 #if !WINDOWSPHONE && !WINRT
                 GetDomains();
@@ -57,7 +52,7 @@ namespace AWS.SimpleDB
         {
             try
             {
-                SimpleDBDomain domain = SimpleDBDomain.CreateDomain(_accessKey, _secretAccessKey, domainName);
+                SimpleDBDomain domain = SimpleDBDomain.CreateDomain(_awsCredentials, domainName);
                 Domains.Add(domain);
                 Domains = Domains.OrderBy(x => x.Name).ToList();
                 return domain;
@@ -76,7 +71,7 @@ namespace AWS.SimpleDB
         {
             try
             {
-                SimpleDBDomain.DeleteDomain(_accessKey, _secretAccessKey, domainName);
+                SimpleDBDomain.DeleteDomain(_awsCredentials, domainName);
                 Domains.RemoveAll(x => x.Name == domainName);
                 Domains = Domains.OrderBy(x => x.Name).ToList();
             }
@@ -93,7 +88,7 @@ namespace AWS.SimpleDB
         {
             try
             {
-                List<SimpleDBDomain> domains = SimpleDBDomain.ListDomains(_accessKey, _secretAccessKey);
+                List<SimpleDBDomain> domains = SimpleDBDomain.ListDomains(_awsCredentials);
                 foreach (var domain in domains)
                 {
                     if (Domains.Any(x => x.Name == domain.Name) == false)

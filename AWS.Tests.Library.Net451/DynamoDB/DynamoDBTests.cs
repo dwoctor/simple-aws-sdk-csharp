@@ -19,6 +19,7 @@ namespace AWS.Tests.Library
 		protected static Int32 _numberAttributeValue = new Random().Next();
 		protected static Byte[] _binaryAttributeValue = new Byte[] { Byte.MinValue, Byte.MaxValue };
 		protected static DynamoDBAttribute _hashKeyAttribute = new DynamoDBAttribute(_hashKeyName, _hashKeyValue, true);
+        protected static DynamoDBAttribute _hashKeyAttributeNoValue = new DynamoDBAttribute(_hashKeyName, Types.Enum.Number, true);
 		protected static DynamoDBAttribute _stringAttribute = new DynamoDBAttribute(_stringAttributeKey, _stringAttributeValue);
 		protected static DynamoDBAttribute _numberAttribute = new DynamoDBAttribute(_numberAttributeKey, _numberAttributeValue);
 		protected static DynamoDBAttribute _binaryAttribute = new DynamoDBAttribute(_binaryAttributeKey, _binaryAttributeValue);

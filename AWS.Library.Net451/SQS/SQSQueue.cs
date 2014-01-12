@@ -34,11 +34,12 @@ namespace AWS.SQS
         /// <summary>
         /// Upon construction of the queue
         /// </summary>
-        public SQSQueue(String accesskey, String secretAccessKey, String queueName)
+        /// <param name="awsCredentials">AWS Credentials</param>
+        public SQSQueue(AWSCredentials awsCredentials, String queueName)
         {
             try
             {
-                this._sqs = new AmazonSQSClient(accesskey, secretAccessKey);
+                this._sqs = new AmazonSQSClient(awsCredentials.AccessKey, awsCredentials.SecretAccessKey, awsCredentials.Region);
                 this.Name = queueName;
             }
             catch (Exception error)
@@ -120,16 +121,15 @@ namespace AWS.SQS
         /// <summary>
         /// Creates a queue associated with an aws account
         /// </summary>
-        /// <param name="accessKey">The access key of the aws account</param>
-        /// <param name="secretAccessKey">The secret access key of the aws account</param>
+        /// <param name="awsCredentials">AWS Credentials</param>
         /// <param name="queueName">The name of the table to create</param>
-        public static SQSQueue CreateQueue(String accessKey, String secretAccessKey, String queueName)
+        public static SQSQueue CreateQueue(AWSCredentials awsCredentials, String queueName)
         {
             try
             {
-                AmazonSQSClient sqs = new AmazonSQSClient(accessKey, secretAccessKey);
+                AmazonSQSClient sqs = new AmazonSQSClient(awsCredentials.AccessKey, awsCredentials.SecretAccessKey, awsCredentials.Region);
                 CreateQueueResponse createQueueResponse = sqs.CreateQueue(new CreateQueueRequest() { QueueName = queueName });
-                return new SQSQueue(accessKey, secretAccessKey, createQueueResponse.QueueUrl);
+                return new SQSQueue(awsCredentials, createQueueResponse.QueueUrl);
             }
             catch (Exception error)
             {
@@ -140,14 +140,13 @@ namespace AWS.SQS
         /// <summary>
         /// Delete a queue associated with an aws account
         /// </summary>
-        /// <param name="accessKey">The access key of the aws account</param>
-        /// <param name="secretAccessKey">The secret access key of the aws account</param>
+        /// <param name="awsCredentials">AWS Credentials</param>
         /// <param name="queueName">The name of the queue</param>
-        public static void DeleteQueue(String accessKey, String secretAccessKey, String queueName)
+        public static void DeleteQueue(AWSCredentials awsCredentials, String queueName)
         {
             try
             {
-                AmazonSQSClient sqs = new AmazonSQSClient(accessKey, secretAccessKey);
+                AmazonSQSClient sqs = new AmazonSQSClient(awsCredentials.AccessKey, awsCredentials.SecretAccessKey, awsCredentials.Region);
                 GetQueueUrlResponse getQueueUrlResponse = sqs.GetQueueUrl(new GetQueueUrlRequest() { QueueName = queueName });
                 DeleteQueueResponse deleteQueueRequest = sqs.DeleteQueue(new DeleteQueueRequest() { QueueUrl = getQueueUrlResponse.QueueUrl });
             }
@@ -160,18 +159,17 @@ namespace AWS.SQS
         /// <summary>
         /// Gets a list of all the queues associated with an aws account
         /// </summary>
-        /// <param name="accessKey">The access key of the aws account</param>
-        /// <param name="secretAccessKey">The secret access key of the aws account</param>
-        public static List<SQSQueue> GetListOfQueues(String accesskey, String secretAccessKey)
+        /// <param name="awsCredentials">AWS Credentials</param>
+        public static List<SQSQueue> GetListOfQueues(AWSCredentials awsCredentials)
         {
             try
             {
                 List<SQSQueue> queues = new List<SQSQueue>();
-                AmazonSQSClient sqs = new AmazonSQSClient(accesskey, secretAccessKey);
+                AmazonSQSClient sqs = new AmazonSQSClient(awsCredentials.AccessKey, awsCredentials.SecretAccessKey, awsCredentials.Region);
                 ListQueuesResponse listQueuesResponse = sqs.ListQueues(new ListQueuesRequest());
                 foreach (var queueUrl in listQueuesResponse.QueueUrls)
                 {
-                    queues.Add(new SQSQueue(accesskey, secretAccessKey, queueUrl));
+                    queues.Add(new SQSQueue(awsCredentials, queueUrl));
                 }
                 return queues;
             }
@@ -382,16 +380,15 @@ namespace AWS.SQS
         /// <summary>
         /// Creates a queue associated with an aws account
         /// </summary>
-        /// <param name="accessKey">The access key of the aws account</param>
-        /// <param name="secretAccessKey">The secret access key of the aws account</param>
+        /// <param name="awsCredentials">AWS Credentials</param>
         /// <param name="queueName">The name of the table to create</param>
-        public static async Task<SQSQueue> CreateQueueAsync(String accessKey, String secretAccessKey, String queueName)
+        public static async Task<SQSQueue> CreateQueueAsync(AWSCredentials awsCredentials, String queueName)
         {
             try
             {
-                AmazonSQSClient sqs = new AmazonSQSClient(accessKey, secretAccessKey);
+                AmazonSQSClient sqs = new AmazonSQSClient(awsCredentials.AccessKey, awsCredentials.SecretAccessKey, awsCredentials.Region);
                 CreateQueueResponse createQueueResponse = await sqs.CreateQueueAsync(new CreateQueueRequest() { QueueName = queueName });
-                return new SQSQueue(accessKey, secretAccessKey, queueName);
+                return new SQSQueue(awsCredentials, queueName);
             }
             catch (Exception error)
             {
@@ -402,14 +399,13 @@ namespace AWS.SQS
         /// <summary>
         /// Delete a queue associated with an aws account
         /// </summary>
-        /// <param name="accessKey">The access key of the aws account</param>
-        /// <param name="secretAccessKey">The secret access key of the aws account</param>
+        /// <param name="awsCredentials">AWS Credentials</param>
         /// <param name="queueName">The name of the queue</param>
-        public static async Task DeleteQueueAsync(String accessKey, String secretAccessKey, String queueName)
+        public static async Task DeleteQueueAsync(AWSCredentials awsCredentials, String queueName)
         {
             try
             {
-                AmazonSQSClient sqs = new AmazonSQSClient(accessKey, secretAccessKey);
+                AmazonSQSClient sqs = new AmazonSQSClient(awsCredentials.AccessKey, awsCredentials.SecretAccessKey, awsCredentials.Region);
                 GetQueueUrlResponse getQueueUrlResponse = await sqs.GetQueueUrlAsync(new GetQueueUrlRequest() { QueueName = queueName });
                 DeleteQueueResponse deleteQueueRequest = await sqs.DeleteQueueAsync(new DeleteQueueRequest() { QueueUrl = getQueueUrlResponse.QueueUrl });
             }
@@ -422,18 +418,17 @@ namespace AWS.SQS
         /// <summary>
         /// Gets a list of all the queues associated with an aws account
         /// </summary>
-        /// <param name="accessKey">The access key of the aws account</param>
-        /// <param name="secretAccessKey">The secret access key of the aws account</param>
-        public static async Task<List<SQSQueue>> GetListOfQueuesAsync(String accesskey, String secretAccessKey)
+        /// <param name="awsCredentials">AWS Credentials</param>
+        public static async Task<List<SQSQueue>> GetListOfQueuesAsync(AWSCredentials awsCredentials)
         {
             try
             {
                 List<SQSQueue> queues = new List<SQSQueue>();
-                AmazonSQSClient sqs = new AmazonSQSClient(accesskey, secretAccessKey);
+                AmazonSQSClient sqs = new AmazonSQSClient(awsCredentials.AccessKey, awsCredentials.SecretAccessKey, awsCredentials.Region);
                 ListQueuesResponse listQueuesResponse = await sqs.ListQueuesAsync(new ListQueuesRequest());
                 foreach (var queueUrl in listQueuesResponse.QueueUrls)
                 {
-                    queues.Add(new SQSQueue(accesskey, secretAccessKey, queueUrl));
+                    queues.Add(new SQSQueue(awsCredentials, queueUrl));
                 }
                 return queues;
             }
