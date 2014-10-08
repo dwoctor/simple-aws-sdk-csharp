@@ -1,0 +1,230 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{47632EAD-2515-4F22-9402-8A598C426FA2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AWS</RootNamespace>
+    <AssemblyName>AWS.Library.WindowsPhone81</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <TargetPlatformVersion>8.1</TargetPlatformVersion>
+    <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{76F1466A-8B6D-4E39-A767-685A06062A39};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_PHONE_APP;NET20;NET35;NET40;NET45;WINDOWSPHONE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_PHONE_APP</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_PHONE_APP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <OutputPath>bin\ARM\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_PHONE_APP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_PHONE_APP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_PHONE_APP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Source\Library\AWSCredentials.cs">
+      <Link>AWSCredentials.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\dynamodb\attributes\DynamoDBAttribute.cs">
+      <Link>DynamoDB\Attributes\DynamoDBAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\dynamodb\attributes\DynamoDBHashKey.cs">
+      <Link>DynamoDB\Attributes\DynamoDBHashKey.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\dynamodb\attributes\DynamoDBRangeKey.cs">
+      <Link>DynamoDB\Attributes\DynamoDBRangeKey.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\dynamodb\ComparisonOperator.cs">
+      <Link>DynamoDB\ComparisonOperator.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\dynamodb\DynamoDBAttribute.cs">
+      <Link>DynamoDB\DynamoDBAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\dynamodb\DynamoDBBatchWrite.cs">
+      <Link>DynamoDB\DynamoDBBatchWrite.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\dynamodb\DynamoDBClient.cs">
+      <Link>DynamoDB\DynamoDBClient.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\dynamodb\DynamoDBItem.cs">
+      <Link>DynamoDB\DynamoDBItem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\dynamodb\DynamoDBTable.cs">
+      <Link>DynamoDB\DynamoDBTable.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\dynamodb\DynamoDBTableCache.cs">
+      <Link>DynamoDB\DynamoDBTableCache.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\dynamodb\exceptions\DynamoDBAttributeException.cs">
+      <Link>DynamoDB\Exceptions\DynamoDBAttributeException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\dynamodb\exceptions\DynamoDBBatchWriteException.cs">
+      <Link>DynamoDB\Exceptions\DynamoDBBatchWriteException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\dynamodb\exceptions\DynamoDBClientException.cs">
+      <Link>DynamoDB\Exceptions\DynamoDBClientException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\dynamodb\exceptions\DynamoDBItemException.cs">
+      <Link>DynamoDB\Exceptions\DynamoDBItemException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\dynamodb\exceptions\DynamoDBTableCacheException.cs">
+      <Link>DynamoDB\Exceptions\DynamoDBTableCacheException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\dynamodb\exceptions\DynamoDBTableException.cs">
+      <Link>DynamoDB\Exceptions\DynamoDBTableException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\dynamodb\Types.cs">
+      <Link>DynamoDB\Types.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\dynamodb\UpdateAction.cs">
+      <Link>DynamoDB\UpdateAction.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\s3\exceptions\S3BucketException.cs">
+      <Link>S3\Exceptions\S3BucketException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\s3\exceptions\S3ClientException.cs">
+      <Link>S3\Exceptions\S3ClientException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\s3\exceptions\S3ObjectException.cs">
+      <Link>S3\Exceptions\S3ObjectException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\s3\exceptions\S3ObjectKeyException.cs">
+      <Link>S3\Exceptions\S3ObjectKeyException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\s3\S3Bucket.cs">
+      <Link>S3\S3Bucket.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\s3\S3Client.cs">
+      <Link>S3\S3Client.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\s3\S3Object.cs">
+      <Link>S3\S3Object.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\s3\S3ObjectKey.cs">
+      <Link>S3\S3ObjectKey.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\simpledb\exceptions\SimpleDBAttributeException.cs">
+      <Link>SimpleDB\Exceptions\SimpleDBAttributeException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\simpledb\exceptions\SimpleDBClientException.cs">
+      <Link>SimpleDB\Exceptions\SimpleDBClientException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\simpledb\exceptions\SimpleDBDomainException.cs">
+      <Link>SimpleDB\Exceptions\SimpleDBDomainException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\simpledb\exceptions\SimpleDBItemException.cs">
+      <Link>SimpleDB\Exceptions\SimpleDBItemException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\simpledb\SimpleDBAttribute.cs">
+      <Link>SimpleDB\SimpleDBAttribute.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\simpledb\SimpleDBClient.cs">
+      <Link>SimpleDB\SimpleDBClient.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\simpledb\SimpleDBDomain.cs">
+      <Link>SimpleDB\SimpleDBDomain.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\simpledb\SimpleDBItem.cs">
+      <Link>SimpleDB\SimpleDBItem.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\sqs\exceptions\SQSClientException.cs">
+      <Link>SQS\Exceptions\SQSClientException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\sqs\exceptions\SQSMessageException.cs">
+      <Link>SQS\Exceptions\SQSMessageException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\sqs\exceptions\SQSQueueException.cs">
+      <Link>SQS\Exceptions\SQSQueueException.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\sqs\SQSClient.cs">
+      <Link>SQS\SQSClient.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\sqs\SQSMessage.cs">
+      <Link>SQS\SQSMessage.cs</Link>
+    </Compile>
+    <Compile Include="..\..\source\library\sqs\SQSQueue.cs">
+      <Link>SQS\SQSQueue.cs</Link>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="AWSSDK, Version=2.3.1.0, Culture=neutral, PublicKeyToken=9f476d3089b52be3, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\AWSSDK.2.3.1.0\lib\portable-wpa+netcore45\AWSSDK.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
+    <VisualStudioVersion>12.0</VisualStudioVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(TargetPlatformIdentifier)' == '' ">
+    <TargetPlatformIdentifier>WindowsPhoneApp</TargetPlatformIdentifier>
+  </PropertyGroup>
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

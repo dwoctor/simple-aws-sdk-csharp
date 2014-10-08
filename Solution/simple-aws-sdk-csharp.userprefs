@@ -1,0 +1,13 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/David/Desktop/simple-aws-sdk-csharp/AWS.Test.Library/DynamoDBTableCacheTests.cs" line="112" column="1" />
+      <Breakpoint file="/Users/David/Desktop/simple-aws-sdk-csharp/AWS.Test.Library/DynamoDBTableCacheTests.cs" line="52" column="1" />
+      <Breakpoint file="/Users/David/Desktop/simple-aws-sdk-csharp/AWS.Test.Library/DynamoDBTableCacheTests.cs" line="87" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <AuthorInfo Name="" Email="" Copyright="" Company="" Trademark="" />
+</Properties>
